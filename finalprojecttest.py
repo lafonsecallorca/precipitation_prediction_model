@@ -13,28 +13,20 @@ df = pd.read_csv('3526767.csv', low_memory=False)
 
 cols = ['STATION','NAME','PGTM', 'WESD', 'WT01', 'WT02', 'WT03', 'WT04', 'WT05', 'WT06', 'WT08', 'WT09', 'WT11', 'WT13', 'WT14', 'WT16', 'WT18', 'WT22']
 
-
 df = df.drop(cols, axis=1)
 
 df['WDF5'] = df['WDF5'].interpolate()
 df['WSF5'] = df['WSF5'].interpolate()
-
 df['DATE'] = pd.to_datetime(df['DATE'])
-
 df['DAY_OF_YEAR'] = df['DATE'].dt.dayofyear
 
 # Drop the original 'DATE' column
 df = df.drop('DATE', axis=1)
- 
 
 test_data = df[df['TAVG'].isnull()]
 
-
 df.dropna(inplace=True)
 
-print(df.head())
-
-df.info()
 
 y_train = df['TAVG']
 x_train = df.drop(['TAVG'], axis=1)
@@ -61,7 +53,7 @@ test_data.loc[test_data.TAVG.isnull(), 'TAVG'] = y_pred
 df.update(test_data, overwrite=True)
 
 
-#this is not correct, start looking into mean squared_error and r2gir
+#this is not correct, start looking into mean squared_error and r2
 mse_all = mean_squared_error(df['TAVG'], y_pred)
 r2_all = r2_score(df['TAVG'], y_pred)
 
