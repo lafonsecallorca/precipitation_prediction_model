@@ -23,8 +23,10 @@ df['DAY_OF_YEAR'] = df['DATE'].dt.dayofyear
 # Drop the original 'DATE' column
 df = df.drop('DATE', axis=1)
 
+#test data is all the rows where TAVG is null 
 test_data = df[df['TAVG'].isnull()]
 
+#drop the null rows from the dataframe
 df.dropna(inplace=True)
 
 
@@ -49,19 +51,23 @@ y_pred = lr.predict(x_test_scaled)
 
 test_data.loc[test_data.TAVG.isnull(), 'TAVG'] = y_pred
 
-# Update the missing values in 'df' with the imputed values from 'test_data'
-df.update(test_data, overwrite=True)
+frames = [test_data, df]
+
+#add the predicted TAVG rows into the original df 
+df = pd.concat(frames)
 
 
 #this is not correct, start looking into mean squared_error and r2
-mse_all = mean_squared_error(df['TAVG'], y_pred)
-r2_all = r2_score(df['TAVG'], y_pred)
+#mse_all = mean_squared_error(df['TAVG'], y_pred)
+#r2_all = r2_score(df['TAVG'], y_pred)
 
-print(f'Mean Squared Error (Entire Dataset): {mse_all}')
-print(f'R-squared (Entire Dataset): {r2_all}')
+#print(f'Mean Squared Error (Entire Dataset): {mse_all}')
+#print(f'R-squared (Entire Dataset): {r2_all}')
 
 # Display the updated DataFrame
-df.info
+#df.info()
+print(df.head(3))
+
 
 
 
