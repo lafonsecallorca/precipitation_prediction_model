@@ -5,6 +5,7 @@ import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import Lasso
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error, r2_score
 
@@ -18,17 +19,15 @@ df = df.drop(cols, axis=1)
 
 df['WDF5'] = df['WDF5'].interpolate()
 df['WSF5'] = df['WSF5'].interpolate()
-df['DATE'] = pd.to_datetime(df['DATE'])
-df['DAY_OF_YEAR'] = df['DATE'].dt.dayofyear
-
-# Drop the original 'DATE' column
-df = df.drop('DATE', axis=1)
 
 #test data is all the rows where TAVG is null 
 test_data = df[df['TAVG'].isnull()]
 
 train_data = df.copy()
 train_data.dropna(inplace=True)
+
+train_data = train_data.drop('DATE', axis=1)
+test_data = test_data.drop('DATE', axis=1)
 
 
 y_train = train_data['TAVG']
@@ -51,26 +50,16 @@ x_test_scaled = scaler.transform(x_test)
 
 y_pred = lasso.predict(x_test_scaled)
 
-
-num_rows_to_select = 212
-y_true_imputed = y_train.iloc[:num_rows_to_select]
-
-# Calculate MSE between predicted and true values
-mse_y_pred = mean_squared_error(y_true_imputed, y_pred)
-
-print(f'Mean Squared Error (Predicted Values vs True Values): {mse_y_pred}')
-
-
 test_data.loc[test_data.TAVG.isnull(), 'TAVG'] = y_pred
 df.loc[df['TAVG'].isnull(), 'TAVG'] = y_pred
-
 
 
 # Display the updated DataFrame
 df.info()
 print(df.head(3))
-print(df.iloc[50:100])
-print(df.iloc[200:230])
+
+df['target'] = df.shift(-1)['PRCP']
+print(df.head(5))
 
 
 
