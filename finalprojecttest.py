@@ -2,8 +2,9 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-import missingno as mno
+from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Lasso
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error, r2_score
 
@@ -26,12 +27,12 @@ df = df.drop('DATE', axis=1)
 #test data is all the rows where TAVG is null 
 test_data = df[df['TAVG'].isnull()]
 
-#drop the null rows from the dataframe
-df.dropna(inplace=True)
+train_data = df.copy()
+train_data.dropna(inplace=True)
 
 
-y_train = df['TAVG']
-x_train = df.drop(['TAVG'], axis=1)
+y_train = train_data['TAVG']
+x_train = train_data.drop(['TAVG'], axis=1)
 
 scaler = MinMaxScaler()
 x_train_scaled = scaler.fit_transform(x_train)
@@ -39,34 +40,37 @@ x_train_scaled = scaler.fit_transform(x_train)
 
 #Building linear regression model to predict missing values from tavg.shape
 
-lr = LinearRegression()
+alpha = 0.01
+lasso = Lasso(alpha=alpha)
 
-lr.fit(x_train_scaled,y_train)
+lasso.fit(x_train_scaled,y_train)
 
 x_test = test_data.drop('TAVG', axis=1)
 x_test_scaled = scaler.transform(x_test)
 
 
-y_pred = lr.predict(x_test_scaled)
+y_pred = lasso.predict(x_test_scaled)
+
+
+num_rows_to_select = 212
+y_true_imputed = y_train.iloc[:num_rows_to_select]
+
+# Calculate MSE between predicted and true values
+mse_y_pred = mean_squared_error(y_true_imputed, y_pred)
+
+print(f'Mean Squared Error (Predicted Values vs True Values): {mse_y_pred}')
+
 
 test_data.loc[test_data.TAVG.isnull(), 'TAVG'] = y_pred
-
-frames = [test_data, df]
-
-#add the predicted TAVG rows into the original df 
-df = pd.concat(frames)
+df.loc[df['TAVG'].isnull(), 'TAVG'] = y_pred
 
 
-#this is not correct, start looking into mean squared_error and r2
-#mse_all = mean_squared_error(df['TAVG'], y_pred)
-#r2_all = r2_score(df['TAVG'], y_pred)
-
-#print(f'Mean Squared Error (Entire Dataset): {mse_all}')
-#print(f'R-squared (Entire Dataset): {r2_all}')
 
 # Display the updated DataFrame
-#df.info()
+df.info()
 print(df.head(3))
+print(df.iloc[50:100])
+print(df.iloc[200:230])
 
 
 
