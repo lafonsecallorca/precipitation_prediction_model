@@ -10,17 +10,21 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import MinMaxScaler, RobustScaler
 from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.svm import SVR
 
 #cleaning up the data
 
-df = pd.read_csv('3526767.csv', low_memory=False)
+df = pd.read_csv('3538140.csv', low_memory=False)
 
-cols = ['NAME','PGTM', 'WESD', 'WT01', 'WT02', 'WT03', 'WT04', 'WT05', 'WT06', 'WT08', 'WT09', 'WT11', 'WT13', 'WT14', 'WT16', 'WT18', 'WT22']
+cols = ['NAME','PGTM','WDF2','WSF2','AWND']
 
 df = df.drop(cols, axis=1)
 
 df['WDF5'] = df['WDF5'].interpolate()
 df['WSF5'] = df['WSF5'].interpolate()
+#df['WDF2'] = df['WDF2'].interpolate()
+#df['WSF2'] = df['WSF2'].interpolate()
+#df['AWND'] = df['AWND'].interpolate()
 
 #test data is all the rows where TAVG is null 
 test_data = df[df['TAVG'].isnull()]
@@ -37,7 +41,7 @@ test_data = test_data.drop('STATION', axis=1)
 y_train = train_data['TAVG']
 x_train = train_data.drop(['TAVG'], axis=1)
 
-scaler = MinMaxScaler()
+scaler = StandardScaler()
 x_train_scaled = scaler.fit_transform(x_train)
 
 
@@ -95,7 +99,7 @@ r2 = r2_score(y_test, y_pred)
 print(f'Random Forest Mean Squared Error: {mse}')
 print(f'R-squared: {r2}')
 
-knn = KNeighborsRegressor(n_neighbors=12)  # You can experiment with different values of n_neighbors
+knn = KNeighborsRegressor(n_neighbors=14)  # You can experiment with different values of n_neighbors
 knn.fit(X_train_scaled, y_train)
 
 # Make predictions on the test set
@@ -108,11 +112,28 @@ r2 = r2_score(y_test, y_pred_knn)
 print(f'KNN Mean Squared Error: {mse}')
 print(f'R-squared: {r2}')
 
+
+svr = SVR(kernel='rbf') 
+svr.fit(X_train_scaled, y_train)
+
+# Make predictions on the test set
+y_pred_svr = svr.predict(X_test_scaled)
+
+# Evaluate the model
+mse = mean_squared_error(y_test, y_pred_svr)
+r2 = r2_score(y_test, y_pred_svr)
+
+print(f'SVR Mean Squared Error: {mse}')
+print(f'R-squared: {r2}')
+
+
 results_df = pd.DataFrame({
     'Actual_PRCP': y_test,
+    'Predicted_KNN': y_pred_knn,
     'Predicted_RF': y_pred,
-    'Predicted_KNN': y_pred_knn
+    'Predicted_SVR': y_pred_svr
 })
 
 # Display the DataFrame with actual and predicted values
 print(results_df.head(10))
+print(df.head(5))
