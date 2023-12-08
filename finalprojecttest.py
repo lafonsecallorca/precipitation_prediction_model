@@ -22,9 +22,7 @@ df = df.drop(cols, axis=1)
 
 df['WDF5'] = df['WDF5'].interpolate()
 df['WSF5'] = df['WSF5'].interpolate()
-#df['WDF2'] = df['WDF2'].interpolate()
-#df['WSF2'] = df['WSF2'].interpolate()
-#df['AWND'] = df['AWND'].interpolate()
+
 
 #test data is all the rows where TAVG is null 
 test_data = df[df['TAVG'].isnull()]
