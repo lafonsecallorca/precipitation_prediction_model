@@ -1,0 +1,5 @@
+__pycache__
+.cache.sqlite
+.DS_Store
+.gitattributes
+test1.py 

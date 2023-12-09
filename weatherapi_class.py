@@ -2,11 +2,11 @@ import requests
 
 class WeatherData:
 
-    def __init__(self, api_key, lat, lon, dew_api_key):
+    def __init__(self, api_key, dew_api_key, lat, lon):
         self.api_key = api_key
+        self.dew_api_key = dew_api_key
         self.lat = lat
         self.lon = lon
-        self.dew_api_key = dew_api_key
         self.units = 'imperial'
 
     def get_current_data(self):
@@ -22,12 +22,12 @@ class WeatherData:
         return forecast_weather_data
 
     def get_dew_point_data(self):
-        url_dew_point = f'https://api.tomorrow.io/v4/weather/forecast?location={self.lat},{self.lon}&apikey={self.api_key_dew}'
+        url_dew_point = f'https://api.tomorrow.io/v4/weather/forecast?location={self.lat},{self.lon}&apikey={self.dew_api_key}'
         dew_point_response= requests.get(url_dew_point)
         dew_point_data = dew_point_response.json()
         return dew_point_data
 
-    def process_data(self):
+    def process_current_data(self):
         weather_data = self.get_current_data()
         # Retrieve forecast weather data
         forecast_weather_data = self.get_forecast_data()
@@ -50,30 +50,22 @@ class WeatherData:
         dew_point = dew_point_data.get('timelines', {}).get('minutely', [{}])[0].get('values', {}).get('dewPoint')
 
         return {
-            'dew_point': dew_point,
             'temp': temp,
-            'weather_info': weather_info,
-            'weather_description': weather_description,
+            'dew_point': dew_point,
+            'humidity': humidity,
+            'wind_direction': wind_direction,
+            'wind_speed': wind_speed,
             'sea_level_pressure': sea_level,
             'visibility': visibility,
-            'wind_speed': wind_speed,
-            'wind_direction': wind_direction
+            'weather_info': weather_info,
+            'weather_description': weather_description, 
         }
     
-    #def process_data_dailyML:
-        
+    def process_data_dailyML(self):
 
+        weather_data = self.get_dew_point_data()
 
-
-
-
-# Replace OpenWeatherMap API key and location coordinates
-api_key = "7243506b0b349484d43cf58e1d064bac"
-lat = "43.1394398"
-lon = "-77.5970213"
-units = 'imperial'
-dew_api_key = 'b8Eudmqk3mta455AVxTMVYrrtEbbvsh7'
-
+        snow = weather_data.get
 
 
 
