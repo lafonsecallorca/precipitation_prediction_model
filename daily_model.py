@@ -177,5 +177,5 @@ current_weather_description = weather_data_result.get('weather_description')
 print(f'Current temp is {current_temp}')
 print(f'Current wind speed is {current_wind_speed} with a direction of {current_wind_direction} degrees')
 print(f'The current forecast is {current_weather_info} and the description is {current_weather_description}')
-print(f'The predicted precipitation for the current weather is: {formatted_current_precipitation_predict}')
+print(f'The predicted precipitation for the current weather with our daily model is: {formatted_current_precipitation_predict}')
 
