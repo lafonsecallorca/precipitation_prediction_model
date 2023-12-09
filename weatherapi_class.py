@@ -62,10 +62,36 @@ class WeatherData:
         }
     
     def process_data_dailyML(self):
+        weather_data = self.get_dew_point_data() #using dewpoint api for daily ML snow and snow depth
+        weather_info = self.get_current_data() #using current api for the rest
 
-        weather_data = self.get_dew_point_data()
 
-        snow = weather_data.get
+        snow = weather_data.get('timelines', {}).get('minutely', [{}])[0].get('values', {}).get('snowAccumulation')
+        snow_depth = weather_data.get('timelines', {}).get('minutely', [{}])[0].get('values', {}).get('snowDepth')
+        main_info = weather_info.get('main', {})
+        wind_info = weather_info.get('wind', {})
+        tavg = main_info.get('temp')
+        temp_min = main_info.get('temp_min')
+        temp_max = main_info.get('temp_max')
+        wind_speed = wind_info.get('speed')
+        wind_direction = wind_info.get('deg')
+        weather_str =  weather_info.get('weather', [{}])[0].get('main', '')
+        weather_description = weather_info.get('weather', [{}])[0].get('description', '')
+        
+
+        return {
+            'SNOW': snow,
+            'SNWD': snow_depth,
+            'TAVG': tavg,
+            'TMAX': temp_max,
+            'TMIN': temp_min,
+            'WDF5': wind_direction,
+            'WSF5': wind_speed,
+            'weather_info': weather_str,
+            'weather_description': weather_description, 
+        }
+
+
 
 
 
