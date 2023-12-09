@@ -113,6 +113,12 @@ current_weatherdf = pd.DataFrame([weather_data_result])
 current_weatherdf.drop(columns=['weather_info', 'weather_description'], axis=1, inplace=True)
 current_weatherdf.fillna(0, inplace=True)
 
+current_visibility = current_weatherdf['visibility'].values[0]
+conversion_factor = 0.000621371
+current_visibility_miles = current_visibility * conversion_factor
+current_weatherdf['visibility'] = current_visibility_miles
+print(current_weatherdf['visibility'])
+
 api_cols = ['temp','dew_point', 'humidity', 'wind_direction', 'wind_speed', 'sea_level_pressure', 'visibility']
 model_cols = ['Temp (F)', 'Dew Point', 'Humidity', 'Wind Direction', 'Wind Speed', 'Sea Level Pressure', 'Visbility']
 
