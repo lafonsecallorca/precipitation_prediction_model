@@ -128,6 +128,23 @@ current_precipitation_predict = rf_regressor.predict(scaled_current_weatherdf)
 formatted_current_precipitation_predict = ['{:.2f}'.format(value) for value in current_precipitation_predict]
 formatted_current_precipitation_predict = formatted_current_precipitation_predict[0]
 
-print(f'The predicted precipitation for the current weather is: {formatted_current_precipitation_predict}')
+current_temp = weather_data_result.get('temp')
+current_dew_point = weather_data_result.get('dew_point')
+current_humidity = weather_data_result.get('humidity')
+current_wind_direction = weather_data_result.get('wind_direction')
+current_wind_speed = weather_data_result.get('wind_speed')
+current_seal_level = weather_data_result.get('sea_level_pressure')
+current_visibility = weather_data_result.get('visibility')
+current_weather_info = weather_data_result.get('weather_info')
+current_weather_description = weather_data_result.get('weather_description')
 
+
+print(f'Current temp is {current_temp}')
+print(f'Current dew point is {current_dew_point}')
+print(f'Current humidity is {current_humidity}')
+print(f'Current wind speed is {current_wind_speed} with a direction of {current_wind_direction} degrees')
+print(f'Current sea level pressure is {current_seal_level}')
+print(f'Current visbility is {current_visibility}')
+print(f'The current forecast is {current_weather_info} and the description is {current_weather_description}')
+print(f'The predicted precipitation for the current weather is: {formatted_current_precipitation_predict}')
 
