@@ -148,7 +148,7 @@ dew_api_key = 'b8Eudmqk3mta455AVxTMVYrrtEbbvsh7'
 
 weather_instance = WeatherData(api_key, dew_api_key, lat, lon)
 
-weather_data_result = weather_instance.process_data_dailyML()
+weather_data_result = weather_instance.process_current_data_dailyML()
 print(weather_data_result)
 
 current_weatherdf = pd.DataFrame([weather_data_result])

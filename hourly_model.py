@@ -20,7 +20,7 @@ df = pd.read_csv('ROC.csv', low_memory=False)
 df['p01i'] = df['p01i'].fillna(0)
 
 old_cols = ['tmpf', 'valid', 'dwpf', 'relh', 'drct', 'sknt', 'alti', 'mslp', 'p01i', 'vsby']
-new_cols = ['Temp (F)', 'Date', 'Dew Point', 'Humidity', 'Wind Direction', 'Wind Speed', 'Altimeter', 'Sea Level Pressure', 'Hourly Prcp', 'Visbility']
+new_cols = ['Temp (F)', 'Date', 'Dew Point', 'Humidity', 'Wind Direction', 'Wind Speed', 'Altimeter', 'Sea Level Pressure', 'Hourly Prcp', 'Visibility']
 
 for old_col, new_col in zip(old_cols, new_cols):
     df.rename(columns={old_col: new_col}, inplace=True)
@@ -33,7 +33,7 @@ df['Wind Speed'] = df['Wind Speed'].interpolate()
 #df['Altimeter'] = df['Altimeter'].interpolate()
 df['Sea Level Pressure'] = df['Sea Level Pressure'].interpolate()
 df['Hourly Prcp'] = df['Hourly Prcp'].interpolate()
-df['Visbility'] = df['Visbility'].interpolate()
+df['Visibility'] = df['Visibility'].interpolate()
 
 #df.info()
 
@@ -91,7 +91,7 @@ results_df = pd.DataFrame({
 
 # Display the DataFrame with actual and predicted values
 print(results_df.head(10))
-print(df.head(5))
+print(df.tail(5))
 
 #predicting on data from current weather api
 
@@ -115,12 +115,12 @@ current_weatherdf.fillna(0, inplace=True)
 
 current_visibility = current_weatherdf['visibility'].values[0]
 conversion_factor = 0.000621371
-current_visibility_miles = current_visibility * conversion_factor
+current_visibility_miles = current_visibility * conversion_factor  #dataset was in miles for visibility 
+current_visibility_miles = current_visibility_miles.round()
 current_weatherdf['visibility'] = current_visibility_miles
-print(current_weatherdf['visibility'])
 
 api_cols = ['temp','dew_point', 'humidity', 'wind_direction', 'wind_speed', 'sea_level_pressure', 'visibility']
-model_cols = ['Temp (F)', 'Dew Point', 'Humidity', 'Wind Direction', 'Wind Speed', 'Sea Level Pressure', 'Visbility']
+model_cols = ['Temp (F)', 'Dew Point', 'Humidity', 'Wind Direction', 'Wind Speed', 'Sea Level Pressure', 'Visibility']
 
 for api_col, model_col in zip(api_cols, model_cols):
     current_weatherdf.rename(columns={api_col: model_col}, inplace=True)
@@ -154,3 +154,28 @@ print(f'Current visbility is {current_visibility}')
 print(f'The current forecast is {current_weather_info} and the description is {current_weather_description}')
 print(f'The predicted precipitation for the current weather is: {formatted_current_precipitation_predict}')
 
+fiveday_forecast_every_three = weather_instance.process_hourly_forecast()
+
+fiveday_df = pd.DataFrame(fiveday_forecast_every_three)
+
+fiveday_df_features = fiveday_df.copy()
+
+fiveday_df_features.drop(columns=['weather_info', 'weather_description', 'Date', 'feels_like', 'temp_min', 'temp_max'], axis=1, inplace=True)
+fiveday_df_features.fillna(0, inplace=True)
+
+for index, row in fiveday_df_features.iterrows():
+    fiveday_visibility = row['Visibility']
+    conversion_factor = 0.000621371
+    fiveday_visibility_miles = fiveday_visibility * conversion_factor
+    fiveday_visibility_miles = fiveday_visibility_miles.round()
+    fiveday_df_features.at[index, 'Visibility'] = fiveday_visibility_miles
+
+scaled_fiveday_df = scaler.transform(fiveday_df_features)
+
+fiveday_precipitation_predict = rf_regressor.predict(scaled_fiveday_df)
+
+formatted_fiveday_precipitation_predict = ['{:.2f}'.format(value) for value in fiveday_precipitation_predict]
+
+fiveday_df['Predicted_Precipitation'] = formatted_fiveday_precipitation_predict
+
+print(fiveday_df)

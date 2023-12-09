@@ -61,7 +61,7 @@ class WeatherData:
             'weather_description': weather_description, 
         }
     
-    def process_data_dailyML(self):
+    def process_current_data_dailyML(self):
         weather_data = self.get_dew_point_data() #using dewpoint api for daily ML snow and snow depth
         weather_info = self.get_current_data() #using current api for the rest
 
@@ -90,6 +90,47 @@ class WeatherData:
             'weather_info': weather_str,
             'weather_description': weather_description, 
         }
+    
+    def process_hourly_forecast(self):
+        forecast_data = self.get_forecast_data()
+         # Retrieve dew point data
+        dew_point_data = self.get_dew_point_data()
+        hourly_forecast = []
+
+        for entry in forecast_data.get('list', []):
+            # Extract relevant information for each hour
+            dt_txt = entry.get('dt_txt', '')
+            temp = entry.get('main', {}).get('temp')
+            feels_like = entry.get('main', {}).get('feels_like')
+            temp_min = entry.get('main', {}).get('temp_min')
+            temp_max = entry.get('main', {}).get('temp_max')
+            sea_level = entry.get('main', {}).get('sea_level')
+            humidity = entry.get('main', {}).get('humidity')
+            weather_main = entry.get('weather', [{}])[0].get('main', '')
+            weather_description = entry.get('weather', [{}])[0].get('description', '')
+            wind_speed = entry.get('wind', {}).get('speed')
+            wind_deg = entry.get('wind', {}).get('deg')
+            visibility = entry.get('visibility')
+            dew_point = dew_point_data.get('timelines', {}).get('minutely', [{}])[0].get('values', {}).get('dewPoint')
+            
+            # Create a dictionary for each hour and add it to the hourly_forecast list
+            hourly_forecast.append({
+                'Date': dt_txt,
+                'Temp (F)': temp,
+                'Dew Point': dew_point,
+                'Humidity': humidity,
+                'Wind Direction': wind_deg,
+                'Wind Speed': wind_speed,
+                'Sea Level Pressure': sea_level,
+                'Visibility': visibility,
+                'feels_like': feels_like,
+                'temp_min': temp_min,
+                'temp_max': temp_max,
+                'weather_info': weather_main,
+                'weather_description': weather_description,
+            })
+
+        return hourly_forecast
 
 
 
