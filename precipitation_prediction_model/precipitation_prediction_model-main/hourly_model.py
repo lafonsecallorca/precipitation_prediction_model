@@ -66,9 +66,9 @@ class HourlyModel:
         return X_train_scaled, X_test_scaled, y_train, y_test, scaler
                 
     def train_random_forest_model(self, X_train, y_train):
-        model = RandomForestRegressor(n_estimators=100, random_state=42)
-        model.fit(X_train, y_train)
-        return model
+        self.model = RandomForestRegressor(n_estimators=100, random_state=42)
+        self.model.fit(X_train, y_train)
+        return self.model
 
     def train_knn_model(self, X_train, y_train):
         self.model = KNeighborsRegressor(n_neighbors=14)
@@ -99,11 +99,13 @@ def main():
     X_train_scaled, X_test_scaled, y_train, y_test, scaler = weather_model.split_and_scale_data(df)
     
     rf_model = weather_model.train_random_forest_model(X_train_scaled, y_train)
+    print('RF ')
     rf_predict = weather_model.predict(rf_model, X_test_scaled)
     weather_model.evaluate_model(rf_model, X_test_scaled, y_test)
     
     knn_model = weather_model.train_knn_model(X_train_scaled, y_train)
     knn_predict = weather_model.predict(knn_model, X_test_scaled)
+    print('KNN ')
     weather_model.evaluate_model(knn_model, X_test_scaled, y_test)
 
     results_df = pd.DataFrame({
@@ -123,21 +125,29 @@ def main():
     dew_api_key = 'b8Eudmqk3mta455AVxTMVYrrtEbbvsh7'
 
     weather_instance = WeatherData(api_key, dew_api_key, lat, lon)
-    weather_data_result = weather_instance.process_current_data()
-    print(weather_data_result)
 
-    #create df from the weather api data 
-    current_weatherdf = pd.DataFrame([weather_data_result])
+    try:
+        weather_data_result = weather_instance.process_current_data()
+        if weather_data_result is None:
+            raise Exception("API did not return valid data.")
+        
+        print(weather_data_result)
 
-    current_weatherdf.drop(columns=['weather_info', 'weather_description'], axis=1, inplace=True)
-    current_weatherdf.fillna(0, inplace=True)
+         #create df from the weather api data 
+        current_weatherdf = pd.DataFrame([weather_data_result])
+        current_weatherdf.drop(columns=['weather_info', 'weather_description'], axis=1, inplace=True)
+        current_weatherdf.fillna(0, inplace=True)
 
-    #our training model has visibility in miles so we must convert the api's visibility
-    current_visibility = current_weatherdf['visibility'].values[0]
-    conversion_factor = 0.000621371
-    current_visibility_miles = current_visibility * conversion_factor  #dataset was in miles for visibility 
-    current_visibility_miles = current_visibility_miles.round()
-    current_weatherdf['visibility'] = current_visibility_miles
+        #our training model has visibility in miles so we must convert the api's visibility
+        current_visibility = current_weatherdf['visibility'].values[0]
+        conversion_factor = 0.000621371
+        current_visibility_miles = current_visibility * conversion_factor  #dataset was in miles for visibility 
+        current_visibility_miles = current_visibility_miles.round()
+        current_weatherdf['visibility'] = current_visibility_miles
+
+    except Exception as e:
+        print(f"Error fetching API data: {str(e)}")
+        return None
 
 
     #features must be named the same as during fit time
@@ -171,23 +181,31 @@ def main():
     print(f'The current forecast is {current_weather_info} and the description is {current_weather_description}')
     print(f'The predicted precipitation for the current weather is: {formatted_current_precipitation_predict}')
 
-    fiveday_forecast_every_three = weather_instance.process_hourly_forecast()
 
-    fiveday_df = pd.DataFrame(fiveday_forecast_every_three)
+    try:
+        fiveday_forecast_every_three = weather_instance.process_hourly_forecast()
+        if weather_data_result is None:
+            raise Exception("API did not return valid data.")
+        
+        fiveday_df = pd.DataFrame(fiveday_forecast_every_three)
 
-    fiveday_df_features = fiveday_df.copy()
+        fiveday_df_features = fiveday_df.copy()
 
-    fiveday_df_features.drop(columns=['weather_info', 'weather_description', 'Date', 'feels_like', 'temp_min', 'temp_max'], axis=1, inplace=True)
-    fiveday_df_features.fillna(0, inplace=True)
+        fiveday_df_features.drop(columns=['weather_info', 'weather_description', 'Date', 'feels_like', 'temp_min', 'temp_max'], axis=1, inplace=True)
+        fiveday_df_features.fillna(0, inplace=True)
 
-    for index, row in fiveday_df_features.iterrows():
-        fiveday_visibility = row['Visibility']
-        conversion_factor = 0.000621371
-        fiveday_visibility_miles = fiveday_visibility * conversion_factor
-        fiveday_visibility_miles = fiveday_visibility_miles.round()
-        fiveday_df_features.at[index, 'Visibility'] = fiveday_visibility_miles
+        for index, row in fiveday_df_features.iterrows():
+            fiveday_visibility = row['Visibility']
+            conversion_factor = 0.000621371
+            fiveday_visibility_miles = fiveday_visibility * conversion_factor
+            fiveday_visibility_miles = fiveday_visibility_miles.round()
+            fiveday_df_features.at[index, 'Visibility'] = fiveday_visibility_miles
 
-    scaled_fiveday_df = scaler.transform(fiveday_df_features)
+        scaled_fiveday_df = scaler.transform(fiveday_df_features)
+        
+    except Exception as e:
+        print(f"Error fetching API data: {str(e)}")
+        return None
 
     fiveday_precipitation_predict = weather_model.predict(rf_model, scaled_fiveday_df) 
 
