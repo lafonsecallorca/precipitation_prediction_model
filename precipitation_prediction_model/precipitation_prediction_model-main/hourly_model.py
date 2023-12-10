@@ -15,8 +15,8 @@ from weatherapi_class import WeatherData
 
 class HourlyModel:
         
-    def __init__(self, file_path):
-            self.file_path = file_path
+    def __init__(self):
+            self.file_path = 'ROC.csv'
             self.model = None
 
     def read_and_clean_data(self):
@@ -92,8 +92,7 @@ class HourlyModel:
 
 
 def main():
-    file_path = 'ROC.csv'
-    weather_model = HourlyModel(file_path)
+    weather_model = HourlyModel()
     df = weather_model.read_and_clean_data()
 
     X_train_scaled, X_test_scaled, y_train, y_test, scaler = weather_model.split_and_scale_data(df)

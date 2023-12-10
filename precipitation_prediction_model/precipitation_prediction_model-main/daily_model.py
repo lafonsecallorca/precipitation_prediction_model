@@ -14,8 +14,8 @@ from sklearn.svm import SVR
 from weatherapi_class import WeatherData
 
 class DailyModel:
-    def __init__(self, file_path):
-            self.file_path = file_path
+    def __init__(self):
+            self.file_path = '3538140.csv'
             self.model = None
 
     def read_and_clean_data(self):
@@ -104,8 +104,7 @@ class DailyModel:
         return model.predict(data)
 
 def main():
-    file_path = '3538140.csv'
-    weather_model = DailyModel(file_path)
+    weather_model = DailyModel()
     df = weather_model.read_and_clean_data()
 
     X_train_scaled, X_test_scaled, y_train, y_test, scaler = weather_model.split_and_scale_data(df)
