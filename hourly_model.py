@@ -95,7 +95,6 @@ def main():
 
     evaluate_model(knn_model, X_test_scaled, y_test)
 
-
     results_df = pd.DataFrame({
     'Actual_PRCP': y_test,
     'Predicted_KNN': knn_predict,
@@ -106,9 +105,7 @@ def main():
     print(results_df.head(10))
     print(df.tail(5))
 
-
-
-    # Replace OpenWeatherMap API key and location coordinates
+    # predict precipitation with weather api
     api_key = "7243506b0b349484d43cf58e1d064bac"
     lat = "43.1394398"
     lon = "-77.5970213"
@@ -139,7 +136,6 @@ def main():
     for api_col, model_col in zip(api_cols, model_cols):
         current_weatherdf.rename(columns={api_col: model_col}, inplace=True)
 
-
     scaled_current_weatherdf = scaler.transform(current_weatherdf)
     current_precipitation_predict = rf_model.predict(scaled_current_weatherdf)
     formatted_current_precipitation_predict = ['{:.2f}'.format(value) for value in current_precipitation_predict]
@@ -154,7 +150,6 @@ def main():
     current_visibility = weather_data_result.get('visibility')
     current_weather_info = weather_data_result.get('weather_info')
     current_weather_description = weather_data_result.get('weather_description')
-
 
     print(f'Current temp is {current_temp}')
     print(f'Current dew point is {current_dew_point}')
