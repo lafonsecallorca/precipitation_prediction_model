@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Result</title>
+</head>
+<body>
+    <h1>Weather Information</h1>
+    {% if error %}
+        <p>{{ error }}</p>
+    {% else %}
+        <p>Current Temperature: {{ weather.temperature }}</p>
+        <p>Wind Speed: {{ weather.wind_speed }}</p>
+        <p>Wind Direction: {{ weather.wind_direction }}</p>
+    {% endif %}
+</body>
+</html>
