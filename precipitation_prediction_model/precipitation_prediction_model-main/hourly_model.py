@@ -183,7 +183,7 @@ def main():
 
     try:
         fiveday_forecast_every_three = weather_instance.process_hourly_forecast()
-        if weather_data_result is None:
+        if fiveday_forecast_every_three is None:
             raise Exception("API did not return valid data.")
         
         fiveday_df = pd.DataFrame(fiveday_forecast_every_three)

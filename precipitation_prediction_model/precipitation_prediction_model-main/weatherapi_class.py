@@ -22,7 +22,7 @@ class WeatherData:
         return forecast_weather_data
 
     def get_dew_point_data(self):
-        url_dew_point = f'https://api.tomorrow.io/v4/weather/forecast?location={self.lat},{self.lon}&apikey={self.dew_api_key}'
+        url_dew_point = f'https://api.tomorrow.io/v4/timelines?location={self.lat},{self.lon}&fields=dewPoint&timesteps=1h&units=metric&apikey={self.dew_api_key}'
         dew_point_response= requests.get(url_dew_point)
         dew_point_data = dew_point_response.json()
         return dew_point_data
@@ -97,7 +97,7 @@ class WeatherData:
         dew_point_data = self.get_dew_point_data()
         hourly_forecast = []
 
-        for entry in forecast_data.get('list', []):
+        for entry in forecast_data.get and dew_point_data('list', []):
             # Extract relevant information for each hour
             dt_txt = entry.get('dt_txt', '')
             temp = entry.get('main', {}).get('temp')
@@ -111,8 +111,8 @@ class WeatherData:
             wind_speed = entry.get('wind', {}).get('speed')
             wind_deg = entry.get('wind', {}).get('deg')
             visibility = entry.get('visibility')
-            dew_point = dew_point_data.get('timelines', {}).get('minutely', [{}])[0].get('values', {}).get('dewPoint')
-            
+            dew_point = entry.get('data', {}).get('timelines', [{}])[0].get('intervals', [{}])[0].get('values', {}).get('dewPoint')
+
             # Create a dictionary for each hour and add it to the hourly_forecast list
             hourly_forecast.append({
                 'Date': dt_txt,
