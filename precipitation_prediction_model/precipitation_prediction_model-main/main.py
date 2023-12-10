@@ -158,7 +158,7 @@ async def predict_current(predictRequest: PredictionRequest):
             }
 
    
-@app.get("/predict_hourlyML/fiveday_trihourly_forecast")
+@app.get("/predict_hourlyML/fiveday/trihourly_forecast")
 async def predict_fiveday_trihourly(predictRequest: PredictionRequest):
     weather_model = HourlyModel()
     df = weather_model.read_and_clean_data()
@@ -176,7 +176,7 @@ async def predict_fiveday_trihourly(predictRequest: PredictionRequest):
     weather_instance = WeatherData(api_key, dew_api_key, lat, lon)
 
     try:
-        fiveday_forecast_every_three = weather_instance.process_hourly_forecast()
+        fiveday_forecast_every_three = weather_instance.process_trihourly_forecast()
         if fiveday_forecast_every_three is None:
             raise HTTPException(status_code=500, detail="API did not return valid data.")
         

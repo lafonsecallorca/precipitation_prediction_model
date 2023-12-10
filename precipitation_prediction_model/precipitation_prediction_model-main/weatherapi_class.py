@@ -1,3 +1,4 @@
+from datetime import datetime
 import requests
 
 class WeatherData:
@@ -91,13 +92,20 @@ class WeatherData:
             'weather_description': weather_description, 
         }
     
-    def process_hourly_forecast(self):
+    def process_trihourly_forecast(self):
         forecast_data = self.get_forecast_data()
          # Retrieve dew point data
-        dew_point_data = self.get_dew_point_data()
-        hourly_forecast = []
+                 
+        start_time = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0).isoformat()
+        url_dew_point = f'https://api.tomorrow.io/v4/timelines?location={self.lat},{self.lon}&fields=dewPoint&timesteps=1h&units=imperial&apikey=b8Eudmqk3mta455AVxTMVYrrtEbbvsh7&startTime={start_time}'
+        dew_point_response = requests.get(url_dew_point)        
+        dew_point_data = dew_point_response.json()
+        trihourly_forecast = []
 
-        for entry in forecast_data.get('list', []):
+        forecast_entries = forecast_data.get('list', [{}])
+        dew_points = dew_point_data.get('data', {}).get('timelines', [{}])[0].get('intervals', [])
+
+        for entry, dew_point_interval in zip(forecast_entries, dew_points):
             # Extract relevant information for each hour
             dt_txt = entry.get('dt_txt', '')
             temp = entry.get('main', {}).get('temp')
@@ -111,32 +119,28 @@ class WeatherData:
             wind_speed = entry.get('wind', {}).get('speed')
             wind_deg = entry.get('wind', {}).get('deg')
             visibility = entry.get('visibility')
-            
 
-            dew_points = []
-            for interval in dew_point_data.get('data', {}).get('timelines', [{}])[0].get('intervals', []):
-                dew_point = interval.get('values', {}).get('dewPoint')
-                dew_points.append(dew_point)
-            
-            for dew_point in dew_points:
-                # Create a dictionary for each hour and add it to the hourly_forecast list
-                hourly_forecast.append({
-                    'Date': dt_txt,
-                    'Temp (F)': temp,
-                    'Dew Point': dew_point,
-                    'Humidity': humidity,
-                    'Wind Direction': wind_deg,
-                    'Wind Speed': wind_speed,
-                    'Sea Level Pressure': sea_level,
-                    'Visibility': visibility,
-                    'feels_like': feels_like,
-                    'temp_min': temp_min,
-                    'temp_max': temp_max,
-                    'weather_info': weather_main,
-                    'weather_description': weather_description,
-                })
+            # Extract dew point for the corresponding interval
+            dew_point = dew_point_interval.get('values', {}).get('dewPoint')
 
-        return hourly_forecast
+            # Create a dictionary for each hour and add it to the hourly_forecast list
+            trihourly_forecast.append({
+                'Date': dt_txt,
+                'Temp (F)': temp,
+                'Dew Point': dew_point,
+                'Humidity': humidity,
+                'Wind Direction': wind_deg,
+                'Wind Speed': wind_speed,
+                'Sea Level Pressure': sea_level,
+                'Visibility': visibility,
+                'feels_like': feels_like,
+                'temp_min': temp_min,
+                'temp_max': temp_max,
+                'weather_info': weather_main,
+                'weather_description': weather_description,
+            })
+
+        return trihourly_forecast
 
 
 
