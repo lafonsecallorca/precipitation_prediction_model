@@ -47,11 +47,11 @@ async def predict_current(predictRequest: PredictionRequest):
         if weather_data_result is None:
             raise HTTPException(status_code=500, detail="API did not return valid data.")
         
-        print(weather_data_result)
+        #logger.debug(weather_data_result)
 
         current_weatherdf = pd.DataFrame([weather_data_result])
 
-        current_weatherdf.drop(columns=['weather_info', 'weather_description'], axis=1, inplace=True)
+        current_weatherdf.drop(columns=['weather_info', 'weather_description', 'city_name'], axis=1, inplace=True)
         current_weatherdf.fillna(0, inplace=True)
 
     except Exception as e:
@@ -72,8 +72,9 @@ async def predict_current(predictRequest: PredictionRequest):
     current_wind_speed = weather_data_result.get('WSF5')
     current_weather_info = weather_data_result.get('weather_info')
     current_weather_description = weather_data_result.get('weather_description')
+    current_city_name = weather_data_result.get('city_name')
 
-    return {"Prediction": "Your current weather with precipitation prediction using the daily model",
+    return {"Prediction": f"The current weather for {current_city_name} with precipitation prediction using the daily model",
             "Current temp is": current_temp,
             "Current temp min is": current_temp_min,
             "Current temp max is": current_temp_max,
@@ -107,10 +108,10 @@ async def predict_current(predictRequest: PredictionRequest):
         if weather_data_result is None:
             raise HTTPException(status_code=500, detail="API did not return valid data.")
         
-        logger.debug(weather_data_result)
+        #logger.debug(weather_data_result)
 
         current_weatherdf = pd.DataFrame([weather_data_result])
-        current_weatherdf.drop(columns=['weather_info', 'weather_description'], axis=1, inplace=True)
+        current_weatherdf.drop(columns=['weather_info', 'weather_description', 'city_name'], axis=1, inplace=True)
         current_weatherdf.fillna(0, inplace=True)
 
         #our training model has visibility in miles so we must convert the api's visibility
@@ -144,8 +145,9 @@ async def predict_current(predictRequest: PredictionRequest):
     current_visibility = weather_data_result.get('visibility')
     current_weather_info = weather_data_result.get('weather_info')
     current_weather_description = weather_data_result.get('weather_description')
+    current_city_name = weather_data_result.get('city_name')
 
-    return {"Prediction": "Your current weather with precipitation prediction using the hourly model",
+    return {"Prediction": f"The current weather in {current_city_name} with precipitation prediction using the hourly model",
             "Current temp is": current_temp,
             "Current dew point is": current_dew_point,
             "Current humidity is": current_humidity,
@@ -184,7 +186,7 @@ async def predict_fiveday_trihourly(predictRequest: PredictionRequest):
 
         fiveday_df_features = fiveday_df.copy()
 
-        fiveday_df_features.drop(columns=['weather_info', 'weather_description', 'Date', 'feels_like', 'temp_min', 'temp_max'], axis=1, inplace=True)
+        fiveday_df_features.drop(columns=['weather_info', 'weather_description', 'Date', 'feels_like', 'temp_min', 'temp_max', 'city_name'], axis=1, inplace=True)
         fiveday_df_features.fillna(0, inplace=True)
 
         for index, row in fiveday_df_features.iterrows():
@@ -203,12 +205,12 @@ async def predict_fiveday_trihourly(predictRequest: PredictionRequest):
 
     fiveday_precipitation_predict = weather_model.predict(rf_model, scaled_fiveday_df) 
 
-    #print(fiveday_precipitation_predict)
+    #logger.debug(fiveday_precipitation_predict)
 
     formatted_fiveday_precipitation_predict = ['{:.2f}'.format(value) for value in fiveday_precipitation_predict]
 
     fiveday_df['Predicted_Precipitation'] = formatted_fiveday_precipitation_predict
 
-    #print(fiveday_df)
+    #logger.debug(fiveday_df)
 
     return {"Prediction": fiveday_df.to_dict(orient='records')}

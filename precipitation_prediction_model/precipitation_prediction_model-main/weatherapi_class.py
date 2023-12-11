@@ -49,6 +49,7 @@ class WeatherData:
         wind_speed = wind_info.get('speed')
         wind_direction = wind_info.get('deg')
         dew_point = dew_point_data.get('data', {}).get('timelines', [{}])[0].get('intervals', [{}])[0].get('values', {}).get('dewPoint')
+        city_name = weather_data.get('name')
 
         return {
             'temp': temp,
@@ -60,6 +61,7 @@ class WeatherData:
             'visibility': visibility,
             'weather_info': weather_info,
             'weather_description': weather_description, 
+            'city_name': city_name
         }
     
     def process_current_data_dailyML(self):
@@ -78,7 +80,7 @@ class WeatherData:
         wind_direction = wind_info.get('deg')
         weather_str =  weather_info.get('weather', [{}])[0].get('main', '')
         weather_description = weather_info.get('weather', [{}])[0].get('description', '')
-        
+        city_name = weather_info.get('name')
 
         return {
             'SNOW': snow,
@@ -90,6 +92,7 @@ class WeatherData:
             'WSF5': wind_speed,
             'weather_info': weather_str,
             'weather_description': weather_description, 
+            'city_name': city_name
         }
     
     def process_trihourly_forecast(self):
@@ -119,6 +122,7 @@ class WeatherData:
             wind_speed = entry.get('wind', {}).get('speed')
             wind_deg = entry.get('wind', {}).get('deg')
             visibility = entry.get('visibility')
+            city_name = forecast_data.get('city',{}).get('name')
 
             # Extract dew point for the corresponding interval
             dew_point = dew_point_interval.get('values', {}).get('dewPoint')
@@ -138,6 +142,7 @@ class WeatherData:
                 'temp_max': temp_max,
                 'weather_info': weather_main,
                 'weather_description': weather_description,
+                'city_name': city_name
             })
 
         return trihourly_forecast
