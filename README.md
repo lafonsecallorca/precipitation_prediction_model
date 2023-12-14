@@ -18,13 +18,10 @@
        <li>License</li>
 </ul>
 </body>
-
 <h2>Introduction</h2>
 <body>Our project focuses on building a sophisticated weather prediction and analysis system that integrates machine learning algorithms, real-time weather data retrieval, and data analysis techniques to forecast and analyze weather conditions accurately. Rainfall is a critical component of our ecosystem. Rainfall influences agriculture, water resource management, urban planning, and disaster preparedness. The ability to accurately predict rainfall helps with daily planning as well as long-term sustainability. For this project specifically, we wanted to create a model to predict rainfall but also make a recommendation on whether to bring an umbrella or not based on the rainfall prediction.
 
 Rainfall patterns can vary significantly making it challenging to accurately predict. Changes in weather and precipitation are factors that contribute to the difficulties in predicting rainfall. Our goal with this project is to provide an accurate way to predict rainfall. This model will use historical weather data collected over the past 20 years and uses methods to preprocess this data. Machine learning algorithms are employed to train the model. The model then learns patterns and relationships between various weather parameters and rainfall levels. Current weather data is then inputted into the model which allows it to make predictions about future rainfall.​</body>
-
-​
 <h2>Models</h2>
 <h3>Daily Model</h3>
 The first dataset we found was from the National Center for Environmental Information. For our model, we looked at data from the past 20 years. This is the dataset we originally worked with but after some experimentation, we found that it was limited in the weather data it offered.​
