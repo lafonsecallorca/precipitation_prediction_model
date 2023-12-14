@@ -44,8 +44,7 @@ For the hourly mode, we used a data set that is from Iowa State University. This
       <li>Utilized linear regression to predict missing values in the target variable TAVG.</li>​
       <li>Interpolated missing values for essential weather parameters to create a more complete dataset.​
       </li>
-      </ul>
-            
+      </ul>     
       <h5>Feature Scaling​</h5>
       <ul>
       <li> Applied Min-Max Scaling to normalize feature values for better model performance.​</li>​
