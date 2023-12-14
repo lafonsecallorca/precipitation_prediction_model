@@ -23,14 +23,40 @@
 Provide a brief overview of the project, its goals, and the significance of predicting precipitation using AI models.
 
 <h2>Models</h2>
-<h3>Hourly Model</h3>
-Explain the purpose and methodology of the Hourly Model. Include details about the ROC dataset, preprocessing steps, and the machine learning algorithms utilized.
-
 <h3>Daily Model</h3>
-Describe the Daily Model, focusing on the 3538140 dataset, preprocessing techniques such as imputation and Min-Max scaling, and the machine learning algorithms employed.
+The first dataset we found was from the National Center for Environmental Information. For our model, we looked at data from the past 20 years. This is the dataset we originally worked with but after some experimentation, we found that it was limited in the weather data it offered.​
+
+<a href= "https://www.ncdc.noaa.gov/cdo-web/search">This is the link to the daily dataset.</a>
+
+<h3>Hourly Model</h3>
+
+For the hourly mode, we used a data set that is from Iowa State University. This dataset offered data every hour and we collected data from the past 10 years​. This dataset allowed us to select more weather data to make our model more robust.
+
+<a href= 'https://mesonet.agron.iastate.edu/request/download.phtml​'>This is the link for the hourly dataset. </a>
 
 <h2>Preprocessing</h2>
-Discuss the preprocessing steps applied to both datasets, highlighting any variations between the Hourly and Daily models.
+<h3>Daily Model</h3>
+      Handling Missing Values​
+      
+            Utilized linear regression to predict missing values in the target variable TAVG.​
+      
+      Interpolated missing values for essential weather parameters to create a more complete dataset.​
+      
+      Feature Scaling​
+      
+      Applied Min-Max Scaling to normalize feature values for better model performance.​
+      
+      Ensured uniform scaling across features to maintain consistency in the dataset.​
+
+Data Cleaning​
+
+Interpolated missing values for essential weather parameters to create a more complete dataset.​
+
+Removed unnecessary columns such as 'NAME,' and 'PGTM,' during the preprocessing phase.​
+
+Target Variable Transformation​
+
+Transformed the target variable 'PRCP' to enhance prediction accuracy using appropriate scaling techniques.​
 
 <h2>Data Splitting and Model Validation</h2>
 Explain the data splitting strategy (e.g., 70/30 split) and the techniques employed for validating the models. Mention any specific considerations for each model.
