@@ -14,8 +14,7 @@
        <li>API Integration</li>
        <li>Usage</li>
        <li>Contributing</li>
-       <li>Introduction</li>
-       <li>Introduction</li>
+       <li>License</li>
 </ul>
 </body>
 
@@ -44,5 +43,5 @@ Provide instructions on how users can use the code, run the models, and interact
 <h2>Contributing</h2>
 Outline guidelines for contributors, including information on how to report issues, propose enhancements, and submit pull requests.
 
-License
-Specify the project's license to ensure proper usage and distribution.
+<h2>License</h2>
+This project is part of an undergraduate computer science degree program and is not currently licensed for public use or distribution. All rights are reserved by the authors.
