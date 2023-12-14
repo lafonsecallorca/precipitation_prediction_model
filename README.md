@@ -27,12 +27,12 @@ Rainfall patterns can vary significantly making it challenging to accurately pre
 The first dataset we found was from the National Center for Environmental Information. For our model, we looked at data from the past 20 years. This is the dataset we originally worked with but after some experimentation, we found that it was limited in the weather data it offered.​
 
 
-<a href="[https://www.ncdc.noaa.gov/cdo-web/search]">This is the link to the daily dataset.</a>
+<a href="https://www.ncdc.noaa.gov/cdo-web/search">This is the link to the daily dataset.</a>
 
 <h3>Hourly Model</h3>
 For the hourly mode, we used a data set that is from Iowa State University. This dataset offered data every hour and we collected data from the past 10 years​. This dataset allowed us to select more weather data to make our model more robust.
 
-<a href= '[https://mesonet.agron.iastate.edu/request/download.phtml​]'>This is the link for the hourly dataset. </a>
+<a href="https://mesonet.agron.iastate.edu/request/download.phtml​">This is the link for the hourly dataset. </a>
 
 <h2>Preprocessing</h2>
 <h3>Daily Model</h3>
