@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Weather Information</title>
+    <title>Weather Forecast</title>
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-    <h1>Get Weather Information</h1>
-    <form action="/" method="POST">
-        <label for="zipcode">Enter ZIP Code:</label><br>
+    <h1>Weather Forecast</h1>
+    <div class="index-page">
+    <form action="/show_results" method="get">
+        <label for="zipcode">Enter a location (eg. '14420' or 'Brockport, NY'):</label>
         <input type="text" id="zipcode" name="zipcode"><br><br>
-        <input type="submit" value="Get Weather">
+        
+        <label for="forecast_type">Select Forecast Type:</label>
+        <select id="forecast_type" name="forecast_type">
+            <option value="daily">Daily Forecast</option>
+            <option value="trihourly">Tri-Hourly Forecast</option>
+        </select><br><br>
+        
+        <input type="submit" value="Get Forecast">
     </form>
+    </div>
 </body>
 </html>

@@ -84,7 +84,6 @@ async def predict_current(predictRequest: PredictionRequest):
             "Current weather description is":  current_weather_description,
             "Current predicted precipitation is":  formatted_current_precipitation_predict
             }
-
     
 @app.get("/predict_hourlyML/current_weather")
 async def predict_current(predictRequest: PredictionRequest):
@@ -202,7 +201,6 @@ async def predict_fiveday_trihourly(predictRequest: PredictionRequest):
         print(f"Error fetching API data: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal Server Error.")
         
-
     fiveday_precipitation_predict = weather_model.predict(rf_model, scaled_fiveday_df) 
 
     #logger.debug(fiveday_precipitation_predict)

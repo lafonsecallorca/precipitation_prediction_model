@@ -134,3 +134,6 @@ def main():
     # Display the DataFrame with actual and predicted values
     print(results_df.head(10))
     print(df.tail(5))
+
+if __name__ == '__main__':
+    main()

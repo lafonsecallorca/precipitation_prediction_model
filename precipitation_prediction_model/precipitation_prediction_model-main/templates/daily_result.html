@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Prediction Results</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Weather Prediction Results Using Hourly_Model</h1>
+    <div class="result-container">
+        <div class="result-item">
+            <label>Prediction:</label>
+            <span>{{ prediction_data_hourly.Prediction }}</span>
+        </div>
+        <div class="result-item">
+            <label>Current temperature:</label>
+            <span>{{ prediction_data_hourly['Current temp is'] }} °F</span>
+        </div>
+        <div class="result-item">
+            <label>Current min temperature:</label>
+            <span>{{ prediction_data_hourly['Current temp min is'] }} °F</span>
+        </div>
+        <div class="result-item">
+            <label>Current max temperature:</label>
+            <span>{{ prediction_data_hourly['Current temp max is'] }} °F</span>
+        </div>
+        <div class="result-item">
+            <label>Current wind speed:</label>
+            <span>{{ prediction_data_hourly['current wind speed is'] }} mph</span>
+        </div>
+        <div class="result-item">
+            <label>Current wind direction:</label>
+            <span>{{ prediction_data_hourly['Current wind direction is'] }}°</span>
+        </div>
+        <div class="result-item">
+            <label>Current weather info:</label>
+            <span>{{ prediction_data_hourly['Current weather info is'] }}</span>
+        </div>
+        <div class="result-item">
+            <label>Current weather description:</label>
+            <span>{{ prediction_data_hourly['Current weather description is'] }}</span>
+        </div>
+        <div class="result-item">
+            <label>Current predicted precipitation:</label>
+            <span>{{ prediction_data_hourly['Current predicted precipitation is'] }}</span>
+        </div>
+        <div class="result-item">
+            <label>Recommendation:</label>
+            {% if prediction_data_hourly['Current predicted precipitation is']|float > 0.05 %}
+                <span>Bring an umbrella!</span>
+            {% else %}
+                <span>No need for an umbrella.</span>
+            {% endif %}
+         </div>
+    </div>
+    <h1>Weather Prediction Results Using Daily_Model</h1>
+    <div class="result-container">
+        <div class="result-item">
+            <label>Prediction:</label>
+            <span>{{ prediction_data.Prediction }}</span>
+        </div>
+        <div class="result-item">
+            <label>Current temperature:</label>
+            <span>{{ prediction_data['Current temp is'] }} °F</span>
+        </div>
+        <div class="result-item">
+            <label>Current min temperature:</label>
+            <span>{{ prediction_data['Current temp min is'] }} °F</span>
+        </div>
+        <div class="result-item">
+            <label>Current max temperature:</label>
+            <span>{{ prediction_data['Current temp max is'] }} °F</span>
+        </div>
+        <div class="result-item">
+            <label>Current wind speed:</label>
+            <span>{{ prediction_data['current wind speed is'] }} mph</span>
+        </div>
+        <div class="result-item">
+            <label>Current wind direction:</label>
+            <span>{{ prediction_data['Current wind direction is'] }}°</span>
+        </div>
+        <div class="result-item">
+            <label>Current weather info:</label>
+            <span>{{ prediction_data['Current weather info is'] }}</span>
+        </div>
+        <div class="result-item">
+            <label>Current weather description:</label>
+            <span>{{ prediction_data['Current weather description is'] }}</span>
+        </div>
+        <div class="result-item">
+            <label>Current predicted precipitation:</label>
+            <span>{{ prediction_data['Current predicted precipitation is'] }}</span>
+        </div>
+        <div class="result-item">
+            <label>Recommendation:</label>
+            {% if prediction_data['Current predicted precipitation is']|float > 0.05 %}
+                <span>Bring an umbrella!</span>
+            {% else %}
+                <span>No need for an umbrella.</span>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
