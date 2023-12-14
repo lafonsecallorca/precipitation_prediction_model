@@ -32,7 +32,7 @@ The first dataset we found was from the National Center for Environmental Inform
 <h3>Hourly Model</h3>
 For the hourly mode, we used a data set that is from Iowa State University. This dataset offered data every hour and we collected data from the past 10 years​. This dataset allowed us to select more weather data to make our model more robust.
 
-<a href="[https://mesonet.agron.iastate.edu/request/download.phtml](https://mesonet.agron.iastate.edu/ASOS/)​">This is the link for the hourly dataset. </a>
+<a href="https://mesonet.agron.iastate.edu/request/download.phtml">This is the link for the hourly dataset. </a>
 
 <h2>Preprocessing</h2>
 <h3>Daily Model</h3>
