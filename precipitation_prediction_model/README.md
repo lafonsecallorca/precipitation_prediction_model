@@ -1,5 +1,4 @@
-<head>
-      <title>AI Precipitation Prediction Project</title>
-
-</head>
+<h1>
+      AI Precipitation Prediction Project
+</h1>
  
