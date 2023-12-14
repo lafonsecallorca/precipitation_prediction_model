@@ -10,6 +10,7 @@
       <li>Introduction</li>
        <li>Models</li>
        <li>Hourly Model</li>
+       <li>Daily Model</li>
        <li>Data Splitting and Model Validation</li>
        <li>API Integration</li>
        <li>Usage</li>
