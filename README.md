@@ -63,13 +63,18 @@ Transformed the target variable 'PRCP' to enhance prediction accuracy using appr
 Explain the data splitting strategy (e.g., 70/30 split) and the techniques employed for validating the models. Mention any specific considerations for each model.
 
 <h2>API Integration</h2>
-Detail the development of the API that integrates both models. Discuss the API endpoints, their purposes, and how users can leverage the API for weather predictions.
+
 
 <h2>Usage</h2>
-Provide instructions on how users can use the code, run the models, and interact with the API.
+Provide instructions on how users can use the code....
 
-<h2>Contributing</h2>
-Outline guidelines for contributors, including information on how to report issues, propose enhancements, and submit pull requests.
+<h2>Contributors</h2>
+<p>This project was a collaborative effort by the following contributors:</p>
+
+<ul>
+   <li><strong>Laura Fonseca-Llorca</li>
+   <li><strong>Mary Kochmanski</li>
+</ul>
 
 <h2>License</h2>
 This project is part of an undergraduate computer science degree program and is not currently licensed for public use or distribution. All rights are reserved by the authors.
