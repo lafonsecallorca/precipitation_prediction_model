@@ -37,68 +37,79 @@ For the hourly mode, we used a data set that is from Iowa State University. This
 
 <h2>Preprocessing</h2>
 <h3>Daily Model</h3>
-      <h5>Handling Missing Values​</h5>
-      <body>  
-      <ul>
-            <li>Utilized linear regression to predict missing values in the target variable TAVG.</li>​
-            <li>Interpolated missing values for essential weather parameters to create a more complete dataset.​
-      </li>
-      </ul>     
-      <h5>Feature Scaling​</h5>
-      <ul>
-            <li> Applied Min-Max Scaling to normalize feature values for better model performance.​</li>​
-            <li>Ensured uniform scaling across features to maintain consistency in the dataset.​</li>
-      </ul>
-      <h5>Data Cleaning​</h5>
-      <ul>
-            <li> Interpolated missing values for essential weather parameters to create a more complete dataset.​​</li>​
-            <li>Removed unnecessary columns such as 'NAME,' and 'PGTM,' during the preprocessing phase.​</li>
-      </ul>
-       <h5>Target Variable Transformation​</h5>
-      <ul>
-            <li> Transformed the target variable 'PRCP' to enhance prediction accuracy using appropriate scaling techniques.​</li>​
-      </ul>
-      </body>
-
+<h5>Data Cleaning</h5>
+<ul>
+    <li>Implemented data cleaning for the 3538140 dataset, addressing missing values in 'TAVG,' 'TMIN,' 'TMAX,' 'WSF5,' 'SNOW,' and 'SNWD.'</li>
+    <li>Utilized imputation techniques, including linear regression, to fill missing values in 'TAVG,' 'TMIN,' 'TMAX,' 'WSF5,' 'SNOW,' and 'SNWD.'</li>
+    <li>Interpolated missing values in the target variable 'SNOW' and 'SNWD' to enhance dataset completeness.</li>
+</ul>
+<h5>Normalization and Imputation</h5>
+<ul>
+    <li>Performed Min-Max scaling for 'TAVG,' 'TMIN,' 'TMAX,' 'WSF5,' 'SNOW,' and 'SNWD.'</li>
+    <li>Ensured uniform scaling across features to maintain consistency in the dataset.</li>
+    <li>Imputed missing values using linear regression, contributing to a more robust dataset.</li>
+</ul>
+<h5>Column Removal</h5>
+<ul>
+    <li>Removed unnecessary columns such as 'weather_info,' 'weather_description,' and 'city_name' during data preparation.</li>
+    <li>Streamlined the dataset to include only relevant features for precipitation prediction.</li>
+</ul>
 <h3>Hourly Model</h3>
-      <h5>Data Preprocessing</h5>
-      <body>  
-      <ul>
-            <li>Implemented data cleaning for the ROC dataset, addressing missing values in 'Temp (F),' 'Dew Point,' 'Humidity,' 'Wind Direction,' 'Wind Speed,' 'Sea Level Pressure,' 'Visibility,' and 'Hourly Prcp.'</li>
-            <li>Utilized linear regression to impute missing values for 'Temp (F),' 'Dew Point,' 'Humidity,' 'Wind Direction,' 'Wind Speed,' 'Sea Level Pressure,' 'Visibility,' and 'Hourly Prcp.'</li>
-            <li>Interpolated missing values in the target variable 'Hourly Prcp' for better model training.</li>
-            <li>Performed z-score normalization for 'Temp (F),' 'Dew Point,' 'Humidity,' 'Wind Direction,' 'Wind Speed,' 'Sea Level Pressure,' and 'Visibility.'</li>
-            <li>Removed unnecessary columns such as 'station' and 'Date' during data preparation.</li>
-      </ul>     
-      <h5>Data Splitting and Model Validation</h5>
-      <ul>
-            <li>Split the dataset into training and testing sets using a 70/30 split ratio.</li>
-            <li>Applied z-score normalization for large datasets, enhancing model performance.</li>
-            <li>Utilized RandomForestRegressor for training the model, employing 100 decision trees for robust predictions.</li>
-            <li>Evaluated model performance using mean squared error (MSE) and R-squared metrics.</li>
-      </ul>
-      </body>
+<h5>Data Cleaning</h5>
+<ul>
+    <li>Performed data cleaning on the ROC dataset.</li>
+    <li>Addressed missing values in key weather parameters, including 'Temp (F),' 'Dew Point,' 'Humidity,' 'Wind Direction,' 'Wind Speed,' 'Sea Level Pressure,' 'Visibility,' and 'Hourly Prcp.'</li>
+    <li>Implemented linear regression to impute missing values for selected weather parameters.</li>
+    <li>Interpolated missing values in the target variable 'Hourly Prcp' to enhance dataset completeness.</li>
+</ul>
+<h5>Normalization and Imputation</h5>
+<ul>
+    <li>Utilized z-score normalization for 'Temp (F),' 'Dew Point,' 'Humidity,' 'Wind Direction,' 'Wind Speed,' 'Sea Level Pressure,' and 'Visibility.'</li>
+    <li>Ensured consistent scaling across features to maintain data integrity.</li>
+    <li>Imputed missing values using linear regression, contributing to a more robust dataset.</li>
+</ul>
+<h5>Column Removal</h5>
+<ul>
+    <li>Removed unnecessary columns, including 'station' and 'Date,' during the data preparation phase.</li>
+    <li>Streamlined the dataset to include only relevant features for precipitation prediction.</li>
+</ul>
 <h2>Data Splitting and Model Validation</h2>
 <body>
-       <ul>
-            <li>Split the dataset into training and testing sets using a 70/30 split ratio.</li>
-            <li>Applied z-score normalization for large datasets, enhancing model performance.</li>
-            <li>Utilized RandomForestRegressor for training the model, employing 100 decision trees for robust predictions.</li>
-            <li>Evaluated model performance using mean squared error (MSE) and R-squared metrics.</li>
-      </ul>
+     <h3>Daily Model</h3>
+<h5>Data Splitting</h5>
+<ul>
+    <li>Split the daily dataset into training and testing sets using a 70/30 split ratio.</li>
+</ul>
+<h5>Model Validation</h5>
+<ul>
+    <li>Applied Min-Max scaling for large datasets, enhancing model performance.</li>
+    <li>Utilized KNeighborsRegressor for training the daily model with 14 neighbors for robust predictions.</li>
+    <li>Evaluated daily model performance using mean squared error (MSE) and R-squared metrics.</li>
+</ul>
+<h3>Hourly Model</h3>
+<h5>Data Splitting</h5>
+<ul>
+    <li>Split the hourly dataset into training and testing sets using a 70/30 split ratio.</li>
+</ul>
+<h5>Model Validation</h5>
+<ul>
+    <li>Applied z-score normalization for large hourly datasets, enhancing model performance.</li>
+    <li>Utilized RandomForestRegressor for training the hourly model, employing 100 decision trees for robust predictions.</li>
+    <li>Evaluated hourly model performance using mean squared error (MSE) and R-squared metrics.</li>
+</ul>
 </body>
 <h2>API Integration</h2>
 <h3>OpenWeatherMap API</h3>
 <body>
-        <ul>
-            <li> Used for obtaining current weather data and short-term weather forecasts.</li>​
+      <ul>
+            <li>Used for obtaining current weather data and short-term weather forecasts.</li>​
             <li>Provided information such as temperature, humidity, wind speed, visibility, and precipitation.</li>
       </ul>
 </body>
 <h3>Tomorrow.io API (formerly ClimaCell)</h3>
 <body>
         <ul>
-            <li> Utilized for fetching dew point data, which is an essential feature for my models.</li>​
+            <li>Utilized for fetching dew point data, which is an essential feature for my models.</li>​
             <li>Provided detailed timelines for various weather parameters, including dew point, at different intervals.</li>
       </ul>
 </body>
