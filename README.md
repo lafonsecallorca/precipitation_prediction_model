@@ -13,7 +13,6 @@
        <li>Daily Model</li>
        <li>Data Splitting and Model Validation</li>
        <li>API Integration</li>
-       <li>Usage</li>
        <li>Contributing</li>
        <li>License</li>
 </ul>
@@ -64,16 +63,11 @@ Explain the data splitting strategy (e.g., 70/30 split) and the techniques emplo
 
 <h2>API Integration</h2>
 
-
-<h2>Usage</h2>
-Provide instructions on how users can use the code....
-
 <h2>Contributors</h2>
 <p>This project was a collaborative effort by the following contributors:</p>
 
 <ul>
    <li><strong>Laura Fonseca-Llorca</li>
-   <li><strong>Mary Kochmanski</li>
 </ul>
 
 <h2>License</h2>
