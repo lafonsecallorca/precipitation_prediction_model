@@ -39,15 +39,8 @@ For the hourly mode, we used a data set that is from Iowa State University. This
 <h3>Daily Model</h3>
 <h5>Data Cleaning</h5>
 <ul>
-    <li>Implemented data cleaning for the 3538140 dataset, addressing missing values in 'TAVG,' 'TMIN,' 'TMAX,' 'WSF5,' 'SNOW,' and 'SNWD.'</li>
     <li>Utilized imputation techniques, including linear regression, to fill missing values in 'TAVG,' 'TMIN,' 'TMAX,' 'WSF5,' 'SNOW,' and 'SNWD.'</li>
     <li>Interpolated missing values in the target variable 'SNOW' and 'SNWD' to enhance dataset completeness.</li>
-</ul>
-<h5>Normalization and Imputation</h5>
-<ul>
-    <li>Performed Min-Max scaling for 'TAVG,' 'TMIN,' 'TMAX,' 'WSF5,' 'SNOW,' and 'SNWD.'</li>
-    <li>Ensured uniform scaling across features to maintain consistency in the dataset.</li>
-    <li>Imputed missing values using linear regression, contributing to a more robust dataset.</li>
 </ul>
 <h5>Column Removal</h5>
 <ul>
@@ -57,16 +50,9 @@ For the hourly mode, we used a data set that is from Iowa State University. This
 <h3>Hourly Model</h3>
 <h5>Data Cleaning</h5>
 <ul>
-    <li>Performed data cleaning on the ROC dataset.</li>
     <li>Addressed missing values in key weather parameters, including 'Temp (F),' 'Dew Point,' 'Humidity,' 'Wind Direction,' 'Wind Speed,' 'Sea Level Pressure,' 'Visibility,' and 'Hourly Prcp.'</li>
     <li>Implemented linear regression to impute missing values for selected weather parameters.</li>
     <li>Interpolated missing values in the target variable 'Hourly Prcp' to enhance dataset completeness.</li>
-</ul>
-<h5>Normalization and Imputation</h5>
-<ul>
-    <li>Utilized z-score normalization for 'Temp (F),' 'Dew Point,' 'Humidity,' 'Wind Direction,' 'Wind Speed,' 'Sea Level Pressure,' and 'Visibility.'</li>
-    <li>Ensured consistent scaling across features to maintain data integrity.</li>
-    <li>Imputed missing values using linear regression, contributing to a more robust dataset.</li>
 </ul>
 <h5>Column Removal</h5>
 <ul>
