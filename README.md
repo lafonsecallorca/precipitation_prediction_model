@@ -59,9 +59,34 @@ For the hourly mode, we used a data set that is from Iowa State University. This
             <li> Transformed the target variable 'PRCP' to enhance prediction accuracy using appropriate scaling techniques.​</li>​
       </ul>
       </body>
-<h2>Data Splitting and Model Validation</h2>
-Explain the data splitting strategy (e.g., 70/30 split) and the techniques employed for validating the models. Mention any specific considerations for each model.
 
+<h3>Hourly Model</h3>
+      <h5>Data Preprocessing</h5>
+      <body>  
+      <ul>
+            <li>Implemented data cleaning for the ROC dataset, addressing missing values in 'Temp (F),' 'Dew Point,' 'Humidity,' 'Wind Direction,' 'Wind Speed,' 'Sea Level Pressure,' 'Visibility,' and 'Hourly Prcp.'</li>
+            <li>Utilized linear regression to impute missing values for 'Temp (F),' 'Dew Point,' 'Humidity,' 'Wind Direction,' 'Wind Speed,' 'Sea Level Pressure,' 'Visibility,' and 'Hourly Prcp.'</li>
+            <li>Interpolated missing values in the target variable 'Hourly Prcp' for better model training.</li>
+            <li>Performed z-score normalization for 'Temp (F),' 'Dew Point,' 'Humidity,' 'Wind Direction,' 'Wind Speed,' 'Sea Level Pressure,' and 'Visibility.'</li>
+            <li>Removed unnecessary columns such as 'station' and 'Date' during data preparation.</li>
+      </ul>     
+      <h5>Data Splitting and Model Validation</h5>
+      <ul>
+            <li>Split the dataset into training and testing sets using a 70/30 split ratio.</li>
+            <li>Applied z-score normalization for large datasets, enhancing model performance.</li>
+            <li>Utilized RandomForestRegressor for training the model, employing 100 decision trees for robust predictions.</li>
+            <li>Evaluated model performance using mean squared error (MSE) and R-squared metrics.</li>
+      </ul>
+      </body>
+<h2>Data Splitting and Model Validation</h2>
+<body>
+       <ul>
+            <li>Split the dataset into training and testing sets using a 70/30 split ratio.</li>
+            <li>Applied z-score normalization for large datasets, enhancing model performance.</li>
+            <li>Utilized RandomForestRegressor for training the model, employing 100 decision trees for robust predictions.</li>
+            <li>Evaluated model performance using mean squared error (MSE) and R-squared metrics.</li>
+      </ul>
+</body>
 <h2>API Integration</h2>
 <h3>OpenWeatherMap API</h3>
 <body>
