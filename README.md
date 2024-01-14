@@ -40,24 +40,25 @@ For the hourly mode, we used a data set that is from Iowa State University. This
       <h5>Handling Missing Values​</h5>
       <body>  
       <ul>
-      <li>Utilized linear regression to predict missing values in the target variable TAVG.</li>​
-      <li>Interpolated missing values for essential weather parameters to create a more complete dataset.​
+            <li>Utilized linear regression to predict missing values in the target variable TAVG.</li>​
+            <li>Interpolated missing values for essential weather parameters to create a more complete dataset.​
       </li>
       </ul>     
       <h5>Feature Scaling​</h5>
       <ul>
-      <li> Applied Min-Max Scaling to normalize feature values for better model performance.​</li>​
-      <li>Ensured uniform scaling across features to maintain consistency in the dataset.​</li>
+            <li> Applied Min-Max Scaling to normalize feature values for better model performance.​</li>​
+            <li>Ensured uniform scaling across features to maintain consistency in the dataset.​</li>
       </ul>
-Data Cleaning​
-
-Interpolated missing values for essential weather parameters to create a more complete dataset.​
-
-Removed unnecessary columns such as 'NAME,' and 'PGTM,' during the preprocessing phase.​
-
-Target Variable Transformation​
-
-Transformed the target variable 'PRCP' to enhance prediction accuracy using appropriate scaling techniques.</body>
+      <h5>Data Cleaning​</h5>
+      <ul>
+            <li> Interpolated missing values for essential weather parameters to create a more complete dataset.​​</li>​
+            <li>Removed unnecessary columns such as 'NAME,' and 'PGTM,' during the preprocessing phase.​</li>
+      </ul>
+       <h5>Target Variable Transformation​/h5>
+      <ul>
+            <li> Transformed the target variable 'PRCP' to enhance prediction accuracy using appropriate scaling techniques.​</li>​
+      </ul>
+      </body>
 <h2>Data Splitting and Model Validation</h2>
 Explain the data splitting strategy (e.g., 70/30 split) and the techniques employed for validating the models. Mention any specific considerations for each model.
 
