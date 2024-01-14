@@ -63,6 +63,21 @@ For the hourly mode, we used a data set that is from Iowa State University. This
 Explain the data splitting strategy (e.g., 70/30 split) and the techniques employed for validating the models. Mention any specific considerations for each model.
 
 <h2>API Integration</h2>
+<h3>OpenWeatherMap API</h3>
+<body>
+        <ul>
+            <li> Used for obtaining current weather data and short-term weather forecasts.</li>​
+            <li>Provided information such as temperature, humidity, wind speed, visibility, and precipitation.</li>
+      </ul>
+</body>
+<h3>Tomorrow.io API (formerly ClimaCell)</h3>
+<body>
+        <ul>
+            <li> Utilized for fetching dew point data, which is an essential feature for my models.</li>​
+            <li>Provided detailed timelines for various weather parameters, including dew point, at different intervals.</li>
+      </ul>
+</body>
+
 
 <h2>Contributors</h2>
 <p>This project was a collaborative effort by the following contributors:</p>
