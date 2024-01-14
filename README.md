@@ -54,7 +54,7 @@ For the hourly mode, we used a data set that is from Iowa State University. This
             <li> Interpolated missing values for essential weather parameters to create a more complete dataset.​​</li>​
             <li>Removed unnecessary columns such as 'NAME,' and 'PGTM,' during the preprocessing phase.​</li>
       </ul>
-       <h5>Target Variable Transformation​/h5>
+       <h5>Target Variable Transformation​</h5>
       <ul>
             <li> Transformed the target variable 'PRCP' to enhance prediction accuracy using appropriate scaling techniques.​</li>​
       </ul>
