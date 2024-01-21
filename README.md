@@ -1,5 +1,5 @@
 <h1>
-      AI Precipitation Prediction Project
+      PixelBrella AI
 </h1>
 
 ![PixelBrella Main](precipitation_prediction_model/precipitation_prediction_model-main/static/images/main_page.png)
