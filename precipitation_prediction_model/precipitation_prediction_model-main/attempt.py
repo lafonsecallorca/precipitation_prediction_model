@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from geopy.geocoders import GoogleV3
 import requests
+from daily_model import DailyModel
+from hourly_model import HourlyModel
+from weatherapi_class import WeatherData
 from flask_wtf import FlaskForm
 from wtforms import Form, StringField, validators
 from wtforms.validators import DataRequired
@@ -42,7 +45,6 @@ def home():
     daily = session.get('daily', {})
     return render_template("index.html", form=form, result=result, daily=daily)
 
-
 @app.route("/current", methods=['GET', 'POST'])
 def current():
     form = LocationForm()
@@ -60,7 +62,6 @@ def current():
             return render_template("error.html")
 
     return render_template('index.html', form=form)
-
 
 @app.route("/current_daily", methods=['GET', 'POST'])
 def current_daily():
@@ -80,6 +81,7 @@ def current_daily():
 
     return render_template('index.html', form=form)
 
+# ... (other code)
 
 if __name__ == '__main__':
     app.run(debug=True)
