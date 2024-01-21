@@ -1,24 +1,357 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Weather Forecast</title>
-    <link rel="stylesheet" href="/static/styles.css">
-</head>
-<body>
-    <h1>Weather Forecast</h1>
-    <div class="index-page">
-    <form action="/show_results" method="get">
-        <label for="zipcode">Enter a location (eg. '14420' or 'Brockport, NY'):</label>
-        <input type="text" id="zipcode" name="zipcode"><br><br>
-        
-        <label for="forecast_type">Select Forecast Type:</label>
-        <select id="forecast_type" name="forecast_type">
-            <option value="daily">Daily Forecast</option>
-            <option value="trihourly">Tri-Hourly Forecast</option>
-        </select><br><br>
-        
-        <input type="submit" value="Get Forecast">
-    </form>
-    </div>
-</body>
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/html">
+	<head>
+		<title>PixelBrella AI</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="static/assets/css/main.css" />
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+		<noscript><link rel="stylesheet" href="static/assets/css/noscript.css" /></noscript>
+
+	</head>
+	<body class="is-preload">
+
+		<!-- Sidebar -->
+			<section id="sidebar">
+				<div class="inner">
+					<nav>
+						<ul>
+							<li><a href="#intro">Welcome</a></li>
+							<li><a href="#one">Daily Forecast</a></li>
+							<li><a href="#two">Five-day Forecast</a></li>
+							<li><a href="#three">Daily Model</a></li>
+						</ul>
+					</nav>
+				</div>
+			</section>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Intro -->
+					<section id="intro" class="wrapper style1 fullscreen fade-up">
+						<div class="inner">
+							<h1>Welcome to PixelBrella AI</h1>
+							<p>Planning your day just got smarter! Welcome to PixelBrella AI, your go-to destination for precise weather predictions. Simply enter your city and state or zip code, and let our advanced AI assistant guide you on whether you need to grab your umbrella today.</p>
+							<ul class="actions">
+								<li><a href="#one" class="button scrolly">Learn more</a></li>
+							</ul>
+						</div>
+					</section>
+
+				<!-- One -->
+					<section id="one" class="wrapper style2 spotlights">
+						<section>
+							<div class="content">
+								<div class="inner">
+									<h2>Daily Forecast</h2>
+									<p>Dive into precision with our Hourly Model Daily Forecast—an AI masterpiece trained on hourly datasets. From sunrise to sunset, stay weather-savvy with insights into temperature shifts and precipitation. And here's the kicker: our model's got your back on the umbrella dilemma. Your daily key to foresight in a nutshell—stay ahead effortlessly!</p>
+								</div>
+								<div class="getLocation">
+									<form action="/action_page.php">
+									  <label for="location"></label><br>
+									  <input type="text" id="location" name="location"><br><br>
+									  <ul class="actions">
+										<li><a href="generic.html" class="button">Submit</a></li>
+									  </ul>
+									</form>
+								</div>
+							</div>
+						</section>
+						<section>
+							<div class="content">
+								<div class="inner">
+									<div class="container-fluid">
+										<div class="row justify-content-center">
+											<div class="col-12 col-md-4 col-sm-12 col-xs-12">
+												   <div class="card p-4">
+
+													   <div class="d-flex">
+														   <h6 class="flex-grow-1">London</h6>
+														   <h6>16:08</h6>
+													   </div>
+
+													   <div class="d-flex flex-column temp mt-5 mb-3">
+														   <h1 class="mb-0 font-weight-bold" id="heading"> 13&deg; C </h1>
+														   <span class="small grey">Stormy</span>
+													   </div>
+
+													   <div class="d-flex">
+														   <div class="temp-details flex-grow-1">
+																<p class="my-1">
+																	<img src="https://i.imgur.com/B9kqOzp.png" height="17px" >
+
+																   <span> 40 km/h  </span>
+																</p>
+
+																<p class="my-1">
+																   <i class="fa fa-tint mr-2" aria-hidden="true"></i>
+																   <span> 84% </span>
+																</p>
+
+																<p class="my-1">
+																	<img src="https://i.imgur.com/wGSJ8C5.png" height="17px" >
+																	<span> 0.2h </span>
+																</p>
+														   </div>
+
+														   <div>
+															   <img src="https://i.imgur.com/Qw7npIg.png" width="100px">
+														   </div>
+
+
+													   </div>
+
+
+													</div>
+											</div>
+										</div>
+
+
+									</div>
+																</div>
+							</div>
+						</section>
+					</section>
+
+				<!-- Two -->
+					<section id="two" class="wrapper style3 fade-up">
+						<div class="inner">
+							<h2>Tri-hourly Forecast</h2>
+							<p>Experience precision with our Hourly Tri-Hourly Five-Day Forecast—get detailed insights every three hours for the next five days, ensuring you're weather-ready with confidence.</p>
+							<div id="carouselExampleIndicators" class="carousel slide">
+							  <div class="carousel-indicators">
+								<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+								<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+								<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+							  </div>
+							  <div class="carousel-inner">
+								<div class="carousel-item active">
+									<section>
+										<div class="content">
+											<div class="inner">
+												<div class="container-fluid">
+													<div class="row justify-content-center">
+														<div class="col-12 col-md-4 col-sm-12 col-xs-12">
+															   <div class="card p-4">
+
+																   <div class="d-flex">
+																	   <h6 class="flex-grow-1">London</h6>
+																	   <h6>16:08</h6>
+																   </div>
+
+																   <div class="d-flex flex-column temp mt-5 mb-3">
+																	   <h1 class="mb-0 font-weight-bold" id="heading"> 13&deg; C </h1>
+																	   <span class="small grey">Stormy</span>
+																   </div>
+
+																   <div class="d-flex">
+																	   <div class="temp-details flex-grow-1">
+																			<p class="my-1">
+																				<img src="https://i.imgur.com/B9kqOzp.png" height="17px" >
+
+																			   <span> 40 km/h  </span>
+																			</p>
+
+																			<p class="my-1">
+																			   <i class="fa fa-tint mr-2" aria-hidden="true"></i>
+																			   <span> 84% </span>
+																			</p>
+
+																			<p class="my-1">
+																				<img src="https://i.imgur.com/wGSJ8C5.png" height="17px" >
+																				<span> 0.2h </span>
+																			</p>
+																	   </div>
+
+																	   <div>
+																		   <img src="https://i.imgur.com/Qw7npIg.png" width="100px">
+																	   </div>
+
+
+																   </div>
+
+
+																</div>
+														</div>
+													</div>
+
+
+												</div>
+											</div>
+										</div>
+									</section>
+								</div>
+								<div class="carousel-item">
+								  <section>
+									<div class="content">
+										<div class="inner">
+											<div class="container-fluid">
+												<div class="row justify-content-center">
+													<div class="col-12 col-md-4 col-sm-12 col-xs-12">
+														   <div class="card p-4">
+
+															   <div class="d-flex">
+																   <h6 class="flex-grow-1">London</h6>
+																   <h6>16:08</h6>
+															   </div>
+
+															   <div class="d-flex flex-column temp mt-5 mb-3">
+																   <h1 class="mb-0 font-weight-bold" id="heading"> 13&deg; C </h1>
+																   <span class="small grey">Stormy</span>
+															   </div>
+
+															   <div class="d-flex">
+																   <div class="temp-details flex-grow-1">
+																		<p class="my-1">
+																			<img src="https://i.imgur.com/B9kqOzp.png" height="17px" >
+
+																		   <span> 40 km/h  </span>
+																		</p>
+
+																		<p class="my-1">
+																		   <i class="fa fa-tint mr-2" aria-hidden="true"></i>
+																		   <span> 84% </span>
+																		</p>
+
+																		<p class="my-1">
+																			<img src="https://i.imgur.com/wGSJ8C5.png" height="17px" >
+																			<span> 0.2h </span>
+																		</p>
+																   </div>
+
+																   <div>
+																	   <img src="https://i.imgur.com/Qw7npIg.png" width="100px">
+																   </div>
+															   </div>
+															</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</section>
+								</div>
+								<div class="carousel-item">
+								  <img src="..." class="d-block w-100" alt="...">
+								</div>
+							  </div>
+							  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+								<span class="visually-hidden">Previous</span>
+							  </button>
+							  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+								<span class="carousel-control-next-icon" aria-hidden="true"></span>
+								<span class="visually-hidden">Next</span>
+							  </button>
+							</div>
+						</div>
+					</section>
+
+				<!-- Three -->
+					<section id="three" class="wrapper style1 fade-up">
+						<div class="inner">
+							<h2>Daily Forecast with Daily Model</h2>
+								<p>Explore the current weather effortlessly with PixelBrella AI's Daily Model, trained on daily datasets. While it provides quick insights, please note that its accuracy may vary. For more precise forecasts, we recommend opting for our Hourly Model. Stay ahead with the optimal weather forecasting experience!</p>
+							<div class="split style1">
+								<section>
+									<div class="container-fluid">
+										<div class="row justify-content-center">
+											<div class="col-12 col-md-4 col-sm-12 col-xs-12">
+												   <div class="card p-4">
+
+													   <div class="d-flex">
+														   <h6 class="flex-grow-1">London</h6>
+														   <h6>16:08</h6>
+													   </div>
+
+													   <div class="d-flex flex-column temp mt-5 mb-3">
+														   <h1 class="mb-0 font-weight-bold" id="heading"> 13&deg; C </h1>
+														   <span class="small grey">Stormy</span>
+													   </div>
+
+													   <div class="d-flex">
+														   <div class="temp-details flex-grow-1">
+																<p class="my-1">
+																	<img src="https://i.imgur.com/B9kqOzp.png" height="17px" >
+
+																   <span> 40 km/h  </span>
+																</p>
+
+																<p class="my-1">
+																   <i class="fa fa-tint mr-2" aria-hidden="true"></i>
+																   <span> 84% </span>
+																</p>
+
+																<p class="my-1">
+																	<img src="https://i.imgur.com/wGSJ8C5.png" height="17px" >
+																	<span> 0.2h </span>
+																</p>
+														   </div>
+
+														   <div>
+															   <img src="https://i.imgur.com/Qw7npIg.png" width="100px">
+														   </div>
+
+
+													   </div>
+
+
+													</div>
+											</div>
+										</div>
+
+
+									</div>
+								</section>
+								<section>
+									<ul class="contact">
+										<li>
+											<h3>Address</h3>
+											<span>350 New Campus Drive<br />
+												Brockport, NY 14420<br />
+											USA</span>
+										</li>
+										<li>
+											<h3>Email</h3>
+											<a href="#">lfons1@brockport.edu</a>
+										</li>
+										<li>
+											<h3>Phone</h3>
+											<span>(585) 395-2146</span>
+										</li>
+										
+									</ul>
+								</section>
+							</div>
+						</div>
+					</section>
+
+			</div>
+
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper style1-alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="static/assets/js/jquery.min.js"></script>
+			<script src="static/assets/js/jquery.scrollex.min.js"></script>
+			<script src="static/assets/js/jquery.scrolly.min.js"></script>
+			<script src="static/assets/js/browser.min.js"></script>
+			<script src="static/assets/js/breakpoints.min.js"></script>
+			<script src="static/assets/js/util.js"></script>
+			<script src="static/assets/js/main.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+	</body>
 </html>
+
+
+
+<section>
