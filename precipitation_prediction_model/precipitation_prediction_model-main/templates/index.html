@@ -7,7 +7,7 @@
 		<link rel="stylesheet" href="static/assets/css/main.css" />
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 		<noscript><link rel="stylesheet" href="static/assets/css/noscript.css" /></noscript>
-
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 	</head>
 	<body class="is-preload">
 
@@ -48,12 +48,10 @@
 									<p>Dive into precision with our Hourly Model Daily Forecast—an AI masterpiece trained on hourly datasets. From sunrise to sunset, stay weather-savvy with insights into temperature shifts and precipitation. And here's the kicker: our model's got your back on the umbrella dilemma. Your daily key to foresight in a nutshell—stay ahead effortlessly!</p>
 								</div>
 								<div class="getLocation">
-									<form action="/action_page.php">
-									  <label for="location"></label><br>
-									  <input type="text" id="location" name="location"><br><br>
-									  <ul class="actions">
-										<li><a href="#forecast" class="button">Submit</a></li>
-									  </ul>
+									<form method="POST" action="/current">
+										{{ form.csrf_token }}
+										{{ form.location.label }} {{ form.location(size=20) }}
+										<input type="submit" value="Submit">
 									</form>
 								</div>
 							</div>
@@ -67,36 +65,70 @@
 												   <div class="card p-4">
 
 													   <div class="d-flex">
-														   <h6 class="flex-grow-1">London</h6>
-														   <h6>16:08</h6>
+														   {% if result == {}: %}
+															   <h6 class="flex-grow-1">City</h6>
+														   {% else %}
+														   		<h6 class="flex-grow-1">{{ result.city }}</h6>
+														   {% endif %}
 													   </div>
 
 													   <div class="d-flex flex-column temp mt-5 mb-3">
-														   <h1 class="mb-0 font-weight-bold" id="heading"> 13&deg; C </h1>
-														   <span class="small grey">Stormy</span>
+														   {% if result == {}: %}
+														   		<h1 class="mb-0 font-weight-bold" id="heading"> &deg; F </h1>
+														   {% else %}
+														   		<h1 class="mb-0 font-weight-bold" id="heading"> {{ result.temp|int }}&deg; F </h1>
+														   {% endif %}
+
+														   {% if result == {}: %}
+															  <span class="small grey">Forecast</span>
+														   {% else %}
+														   		<h6 class="small grey">{{ result.weather_info }}</h6>
+														   {% endif %}
+
 													   </div>
 
 													   <div class="d-flex">
 														   <div class="temp-details flex-grow-1">
 																<p class="my-1">
-																	<img src="https://i.imgur.com/B9kqOzp.png" height="17px" >
+																	<i class="bi bi-wind"></i>
+																	{% if result == {}: %}
+																		  <span> wind speed  </span>
+																	{% else %}
+																		  <span> {{ result.wind_speed}} mph </span>
+															   		{% endif %}
 
-																   <span> 40 km/h  </span>
+																</p>
+																<p class="my-1">
+																	<i class="bi bi-compass"></i>
+																	{% if result == {}: %}
+																		  <span> wind direction  </span>
+																	{% else %}
+																		  <span> {{ result.wind_direction}}&deg; </span>
+															   		{% endif %}
+
+																</p>
+																<p class="my-1">
+																   <i class="bi bi-moisture"></i>
+																   	{% if result == {}: %}
+																		<span> humidity% </span>
+																	{% else %}
+																		  <span> {{ result.humidity}}% </span>
+															   		{% endif %}
+
 																</p>
 
 																<p class="my-1">
-																   <i class="fa fa-tint mr-2" aria-hidden="true"></i>
-																   <span> 84% </span>
+																	<i class="bi bi-umbrella"></i>
+																	{% if result == {}: %}
+																		<span> umbrella prediction </span>
+																	{% else %}
+																		{% if result.predicted_precipitation|float  > 0.03 and result.weather_info  != "Snow" %}
+																			<span> Yes </span>
+																		{% else %}
+																			<span> No </span>
+																		{% endif %}
+															   		{% endif %}
 																</p>
-
-																<p class="my-1">
-																	<img src="https://i.imgur.com/wGSJ8C5.png" height="17px" >
-																	<span> 0.2h </span>
-																</p>
-														   </div>
-
-														   <div>
-															   <img src="https://i.imgur.com/Qw7npIg.png" width="100px">
 														   </div>
 
 
@@ -119,6 +151,15 @@
 						<div class="inner">
 							<h2>Tri-hourly Forecast</h2>
 							<p>Experience precision with our Hourly Tri-Hourly Five-Day Forecast—get detailed insights every three hours for the next five days, ensuring you're weather-ready with confidence.</p>
+							<div class="getLocation">
+									<form action="/action_page.php">
+									  <label for="location"></label><br>
+									  <input type="text" id="location" name="location" placeholder="Zip Code/City, State"><br><br>
+									  <ul class="actions">
+										<li><a href="#forecast" class="button">Submit</a></li>
+									  </ul>
+									</form>
+							</div>
 							<div id="carouselExampleIndicators" class="carousel slide">
 							  <div class="carousel-indicators">
 								<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -306,20 +347,16 @@
 								</section>
 								<section>
 									<ul class="contact">
-										<li>
-											<h3>Address</h3>
-											<span>350 New Campus Drive<br />
-												Brockport, NY 14420<br />
-											USA</span>
-										</li>
-										<li>
-											<h3>Email</h3>
-											<a href="#">lfons1@brockport.edu</a>
-										</li>
-										<li>
-											<h3>Phone</h3>
-											<span>(585) 395-2146</span>
-										</li>
+
+										<div class="getLocation">
+											<form action="/action_page.php">
+											  <label for="location"></label><br>
+											  <input type="text" id="location" name="location" placeholder="Zip Code/City, State"><br><br>
+											  <ul class="actions">
+												<li><a href="#forecast" class="button">Submit</a></li>
+											  </ul>
+											</form>
+										</div>
 
 									</ul>
 								</section>

@@ -3367,6 +3367,10 @@ input, select, textarea {
 			opacity: 0;
 		}
 
+    #wrapper .inner{
+        color: white;
+    }
+
 /* Header */
 
 	#header {
@@ -3861,7 +3865,7 @@ input, select, textarea {
 
 						#sidebar nav a:after {
 							background-image: none;
-							background-color: #b74e91;
+							background-color: #7B97AB;
 						}
 
 		}
@@ -3934,3 +3938,4 @@ input, select, textarea {
       background-color:  #8CB2B8; /* Replace 'your-active-color' with the desired active color code or name */
       border-color: white; /* Active indicator border color */
     }
+

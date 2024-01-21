@@ -1,10 +1,22 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from geopy.geocoders import GoogleV3
+import requests
 from daily_model import DailyModel
 from hourly_model import HourlyModel
 from weatherapi_class import WeatherData
+from flask_wtf import FlaskForm
+from wtforms import Form, StringField, validators
+from wtforms.validators import DataRequired
+import secrets
+
 
 app = Flask(__name__)
+
+# Generate a secret key
+secret_key = secrets.token_hex(16)
+app.config['SECRET_KEY'] = secret_key
+
+MODEL_API_URL = "http://127.0.0.1:8000/"
 
 # Function to get latitude and longitude from ZIP code using Google Maps API
 def get_coordinates_from_zip(zip_code):
@@ -15,9 +27,43 @@ def get_coordinates_from_zip(zip_code):
         return location.latitude, location.longitude
     return None, None
 
+
+def helper_request_method(endpoint, lat, lon):
+    api_url = MODEL_API_URL + endpoint
+    json_data = {"latitude": lat,
+                 "longitude": lon}
+    return requests.get(api_url, json=json_data)
+
+
+class LocationForm(FlaskForm):
+
+    location = StringField('Zip Code/City, State', validators=[DataRequired()])
+
+
 @app.route("/")
 def home():
-    return render_template("index.html")
+    result = {}
+    form = LocationForm()
+    return render_template("index.html", form=form, result=result)
+
+
+@app.route("/current", methods=['GET', 'POST'])
+def current():
+    form = LocationForm()
+    if form.validate_on_submit():
+        location_value = form.location.data
+        latitude, longitude = get_coordinates_from_zip(location_value)
+        end_point = "predict_hourlyML/current_weather"
+        response = helper_request_method(end_point, latitude, longitude)
+        if response.status_code == 200:
+            result = response.json()  # Use response.json() for JSON responses
+            return render_template('index.html', result=result, form=form)  # Render a template with the result
+        else:
+            # Handle other status codes if needed
+            return "bad response"
+
+    return render_template('index.html', form=form)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
