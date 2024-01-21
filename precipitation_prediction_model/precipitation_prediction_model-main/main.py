@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-import pandas as pd 
+import pandas as pd
 import numpy as np
 from pydantic import BaseModel
 from sklearn.discriminant_analysis import StandardScaler
@@ -20,10 +20,12 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 app = FastAPI()
- 
+
+
 class PredictionRequest(BaseModel):
     latitude: float
     longitude: float
+
 
 @app.get("/predict_dailyML/current_weather")
 async def predict_current(predictRequest: PredictionRequest):
@@ -46,8 +48,8 @@ async def predict_current(predictRequest: PredictionRequest):
         weather_data_result = weather_instance.process_current_data_dailyML()
         if weather_data_result is None:
             raise HTTPException(status_code=500, detail="API did not return valid data.")
-        
-        #logger.debug(weather_data_result)
+
+        # logger.debug(weather_data_result)
 
         current_weatherdf = pd.DataFrame([weather_data_result])
 
@@ -60,7 +62,8 @@ async def predict_current(predictRequest: PredictionRequest):
 
     scaled_current_weatherdf = scaler.transform(current_weatherdf)
 
-    current_precipitation_predict = weather_model.predict(knn_model, scaled_current_weatherdf)  #daily model is using knn algorithm
+    current_precipitation_predict = weather_model.predict(knn_model,
+                                                          scaled_current_weatherdf)  # daily model is using knn algorithm
 
     formatted_current_precipitation_predict = ['{:.2f}'.format(value) for value in current_precipitation_predict]
     formatted_current_precipitation_predict = formatted_current_precipitation_predict[0]
@@ -74,17 +77,19 @@ async def predict_current(predictRequest: PredictionRequest):
     current_weather_description = weather_data_result.get('weather_description')
     current_city_name = weather_data_result.get('city_name')
 
-    return {"Prediction": f"The current weather for {current_city_name} with precipitation prediction using the daily model",
-            "Current temp is": current_temp,
-            "Current temp min is": current_temp_min,
-            "Current temp max is": current_temp_max,
-            "current wind speed is": current_wind_speed,
-            "Current wind direction is": current_wind_direction,
-            "Current weather info is": current_weather_info,
-            "Current weather description is":  current_weather_description,
-            "Current predicted precipitation is":  formatted_current_precipitation_predict
-            }
-    
+    return {
+        "Prediction": f"The current weather for {current_city_name} with precipitation prediction using the daily model",
+        "Current temp is": current_temp,
+        "Current temp min is": current_temp_min,
+        "Current temp max is": current_temp_max,
+        "current wind speed is": current_wind_speed,
+        "Current wind direction is": current_wind_direction,
+        "Current weather info is": current_weather_info,
+        "Current weather description is": current_weather_description,
+        "Current predicted precipitation is": formatted_current_precipitation_predict
+        }
+
+
 @app.get("/predict_hourlyML/current_weather")
 async def predict_current(predictRequest: PredictionRequest):
     try:
@@ -98,7 +103,7 @@ async def predict_current(predictRequest: PredictionRequest):
         # predict precipitation with weather api
         api_key = "7243506b0b349484d43cf58e1d064bac"
         lat = predictRequest.latitude
-        lon = predictRequest.longitude   
+        lon = predictRequest.longitude
         dew_api_key = 'b8Eudmqk3mta455AVxTMVYrrtEbbvsh7'
 
         weather_instance = WeatherData(api_key, dew_api_key, lat, lon)
@@ -106,17 +111,17 @@ async def predict_current(predictRequest: PredictionRequest):
         weather_data_result = weather_instance.process_current_data()
         if weather_data_result is None:
             raise HTTPException(status_code=500, detail="API did not return valid data.")
-        
-        #logger.debug(weather_data_result)
+
+        # logger.debug(weather_data_result)
 
         current_weatherdf = pd.DataFrame([weather_data_result])
         current_weatherdf.drop(columns=['weather_info', 'weather_description', 'city_name'], axis=1, inplace=True)
         current_weatherdf.fillna(0, inplace=True)
 
-        #our training model has visibility in miles so we must convert the api's visibility
+        # our training model has visibility in miles so we must convert the api's visibility
         current_visibility = current_weatherdf['visibility'].values[0]
         conversion_factor = 0.000621371
-        current_visibility_miles = current_visibility * conversion_factor  #dataset was in miles for visibility 
+        current_visibility_miles = current_visibility * conversion_factor  # dataset was in miles for visibility
         current_visibility_miles = current_visibility_miles.round()
         current_weatherdf['visibility'] = current_visibility_miles
 
@@ -124,14 +129,15 @@ async def predict_current(predictRequest: PredictionRequest):
         print(f'Error {str(e)}')
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
-    api_cols = ['temp','dew_point', 'humidity', 'wind_direction', 'wind_speed', 'sea_level_pressure', 'visibility']
-    model_cols = ['Temp (F)', 'Dew Point', 'Humidity', 'Wind Direction', 'Wind Speed', 'Sea Level Pressure', 'Visibility']
+    api_cols = ['temp', 'dew_point', 'humidity', 'wind_direction', 'wind_speed', 'sea_level_pressure', 'visibility']
+    model_cols = ['Temp (F)', 'Dew Point', 'Humidity', 'Wind Direction', 'Wind Speed', 'Sea Level Pressure',
+                  'Visibility']
 
     for api_col, model_col in zip(api_cols, model_cols):
         current_weatherdf.rename(columns={api_col: model_col}, inplace=True)
 
     scaled_current_weatherdf = scaler.transform(current_weatherdf)
-    current_precipitation_predict = weather_model.predict(rf_model,scaled_current_weatherdf)
+    current_precipitation_predict = weather_model.predict(rf_model, scaled_current_weatherdf)
     formatted_current_precipitation_predict = ['{:.2f}'.format(value) for value in current_precipitation_predict]
     formatted_current_precipitation_predict = formatted_current_precipitation_predict[0]
 
@@ -146,19 +152,20 @@ async def predict_current(predictRequest: PredictionRequest):
     current_weather_description = weather_data_result.get('weather_description')
     current_city_name = weather_data_result.get('city_name')
 
-    return {"Prediction": f"The current weather in {current_city_name} with precipitation prediction using the hourly model",
-            "Current temp is": current_temp,
-            "Current dew point is": current_dew_point,
-            "Current humidity is": current_humidity,
-            "current sea level pressure is": current_seal_level,
-            "current wind speed is": current_wind_speed,
-            "Current wind direction is": current_wind_direction,
-            "Current weather info is": current_weather_info,
-            "Current weather description is":  current_weather_description,
-            "Current predicted precipitation is":  formatted_current_precipitation_predict
-            }
+    return {
+        "Prediction": f"The current weather in {current_city_name} with precipitation prediction using the hourly model",
+        "Current temp is": current_temp,
+        "Current dew point is": current_dew_point,
+        "Current humidity is": current_humidity,
+        "current sea level pressure is": current_seal_level,
+        "current wind speed is": current_wind_speed,
+        "Current wind direction is": current_wind_direction,
+        "Current weather info is": current_weather_info,
+        "Current weather description is": current_weather_description,
+        "Current predicted precipitation is": formatted_current_precipitation_predict
+        }
 
-   
+
 @app.get("/predict_hourlyML/fiveday/trihourly_forecast")
 async def predict_fiveday_trihourly(predictRequest: PredictionRequest):
     weather_model = HourlyModel()
@@ -171,7 +178,7 @@ async def predict_fiveday_trihourly(predictRequest: PredictionRequest):
     # predict precipitation with weather api
     api_key = "7243506b0b349484d43cf58e1d064bac"
     lat = predictRequest.latitude
-    lon = predictRequest.longitude   
+    lon = predictRequest.longitude
     dew_api_key = 'b8Eudmqk3mta455AVxTMVYrrtEbbvsh7'
 
     weather_instance = WeatherData(api_key, dew_api_key, lat, lon)
@@ -180,12 +187,14 @@ async def predict_fiveday_trihourly(predictRequest: PredictionRequest):
         fiveday_forecast_every_three = weather_instance.process_trihourly_forecast()
         if fiveday_forecast_every_three is None:
             raise HTTPException(status_code=500, detail="API did not return valid data.")
-        
+
         fiveday_df = pd.DataFrame(fiveday_forecast_every_three)
 
         fiveday_df_features = fiveday_df.copy()
 
-        fiveday_df_features.drop(columns=['weather_info', 'weather_description', 'Date', 'feels_like', 'temp_min', 'temp_max', 'city_name'], axis=1, inplace=True)
+        fiveday_df_features.drop(
+            columns=['weather_info', 'weather_description', 'Date', 'feels_like', 'temp_min', 'temp_max', 'city_name'],
+            axis=1, inplace=True)
         fiveday_df_features.fillna(0, inplace=True)
 
         for index, row in fiveday_df_features.iterrows():
@@ -196,19 +205,19 @@ async def predict_fiveday_trihourly(predictRequest: PredictionRequest):
             fiveday_df_features.at[index, 'Visibility'] = fiveday_visibility_miles
 
         scaled_fiveday_df = scaler.transform(fiveday_df_features)
-        
+
     except Exception as e:
         print(f"Error fetching API data: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal Server Error.")
-        
-    fiveday_precipitation_predict = weather_model.predict(rf_model, scaled_fiveday_df) 
 
-    #logger.debug(fiveday_precipitation_predict)
+    fiveday_precipitation_predict = weather_model.predict(rf_model, scaled_fiveday_df)
+
+    # logger.debug(fiveday_precipitation_predict)
 
     formatted_fiveday_precipitation_predict = ['{:.2f}'.format(value) for value in fiveday_precipitation_predict]
 
     fiveday_df['Predicted_Precipitation'] = formatted_fiveday_precipitation_predict
 
-    #logger.debug(fiveday_df)
+    # logger.debug(fiveday_df)
 
     return {"Prediction": fiveday_df.to_dict(orient='records')}
