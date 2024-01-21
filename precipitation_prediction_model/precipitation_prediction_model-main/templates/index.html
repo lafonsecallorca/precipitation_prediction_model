@@ -301,37 +301,62 @@
 											<div class="col-12 col-md-4 col-sm-12 col-xs-12">
 												   <div class="card p-4">
 
-													   <div class="d-flex">
-														   <h6 class="flex-grow-1">London</h6>
-														   <h6>16:08</h6>
+													     <div class="d-flex">
+														   {% if daily == {}: %}
+															   <h6 class="flex-grow-1">City</h6>
+														   {% else %}
+														   		<h6 class="flex-grow-1">{{ daily.city }}</h6>
+														   {% endif %}
 													   </div>
 
 													   <div class="d-flex flex-column temp mt-5 mb-3">
-														   <h1 class="mb-0 font-weight-bold" id="heading"> 13&deg; C </h1>
-														   <span class="small grey">Stormy</span>
+														   {% if daily == {}: %}
+														   		<h1 class="mb-0 font-weight-bold" id="heading"> &deg; F </h1>
+														   {% else %}
+														   		<h1 class="mb-0 font-weight-bold" id="heading"> {{ daily.temp|int }}&deg; F </h1>
+														   {% endif %}
+
+														   {% if daily == {}: %}
+															  <span class="small grey">Forecast</span>
+														   {% else %}
+														   		<h6 class="small grey">{{ daily.weather_info }}</h6>
+														   {% endif %}
+
 													   </div>
 
 													   <div class="d-flex">
 														   <div class="temp-details flex-grow-1">
 																<p class="my-1">
-																	<img src="https://i.imgur.com/B9kqOzp.png" height="17px" >
+																	<i class="bi bi-wind"></i>
+																	{% if daily == {}: %}
+																		  <span> wind speed  </span>
+																	{% else %}
+																		  <span> {{ daily.wind_speed}} mph </span>
+															   		{% endif %}
 
-																   <span> 40 km/h  </span>
+																</p>
+																<p class="my-1">
+																	<i class="bi bi-compass"></i>
+																	{% if daily == {}: %}
+																		  <span> wind direction  </span>
+																	{% else %}
+																		  <span> {{ daily.wind_direction}}&deg; </span>
+															   		{% endif %}
+
 																</p>
 
 																<p class="my-1">
-																   <i class="fa fa-tint mr-2" aria-hidden="true"></i>
-																   <span> 84% </span>
+																	<i class="bi bi-umbrella"></i>
+																	{% if daily == {}: %}
+																		<span> umbrella prediction </span>
+																	{% else %}
+																		{% if daily.predicted_precipitation|float  > 0.03 and daily.weather_info  != "Snow" %}
+																			<span> Yes </span>
+																		{% else %}
+																			<span> No </span>
+																		{% endif %}
+															   		{% endif %}
 																</p>
-
-																<p class="my-1">
-																	<img src="https://i.imgur.com/wGSJ8C5.png" height="17px" >
-																	<span> 0.2h </span>
-																</p>
-														   </div>
-
-														   <div>
-															   <img src="https://i.imgur.com/Qw7npIg.png" width="100px">
 														   </div>
 
 
@@ -347,14 +372,11 @@
 								</section>
 								<section>
 									<ul class="contact">
-
 										<div class="getLocation">
-											<form action="/action_page.php">
-											  <label for="location"></label><br>
-											  <input type="text" id="location" name="location" placeholder="Zip Code/City, State"><br><br>
-											  <ul class="actions">
-												<li><a href="#forecast" class="button">Submit</a></li>
-											  </ul>
+											<form method="POST" action="/current_daily">
+												{{ form.csrf_token }}
+												{{ form.location.label }} {{ form.location(size=20) }}
+												<input type="submit" value="Submit">
 											</form>
 										</div>
 
@@ -371,7 +393,7 @@
 			<footer id="footer" class="wrapper style1-alt">
 				<div class="inner">
 					<ul class="menu">
-						<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+						<li>&copy; Untitled. All rights reserved.</li>
 					</ul>
 				</div>
 			</footer>

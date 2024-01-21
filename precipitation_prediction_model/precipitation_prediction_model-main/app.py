@@ -9,7 +9,6 @@ from wtforms import Form, StringField, validators
 from wtforms.validators import DataRequired
 import secrets
 
-
 app = Flask(__name__)
 
 # Generate a secret key
@@ -17,6 +16,7 @@ secret_key = secrets.token_hex(16)
 app.config['SECRET_KEY'] = secret_key
 
 MODEL_API_URL = "http://127.0.0.1:8000/"
+
 
 # Function to get latitude and longitude from ZIP code using Google Maps API
 def get_coordinates_from_zip(zip_code):
@@ -36,19 +36,20 @@ def helper_request_method(endpoint, lat, lon):
 
 
 class LocationForm(FlaskForm):
-
     location = StringField('Zip Code/City, State', validators=[DataRequired()])
 
 
 @app.route("/")
 def home():
     result = {}
+    daily = {}
     form = LocationForm()
-    return render_template("index.html", form=form, result=result)
+    return render_template("index.html", form=form, result=result, daily=daily)
 
 
 @app.route("/current", methods=['GET', 'POST'])
 def current():
+    daily = {}
     form = LocationForm()
     if form.validate_on_submit():
         location_value = form.location.data
@@ -57,10 +58,29 @@ def current():
         response = helper_request_method(end_point, latitude, longitude)
         if response.status_code == 200:
             result = response.json()  # Use response.json() for JSON responses
-            return render_template('index.html', result=result, form=form)  # Render a template with the result
+            return render_template('index.html', result=result, form=form, daily=daily)  # Render a template with the result
         else:
             # Handle other status codes if needed
-            return "bad response"
+            return render_template("error.html")
+
+    return render_template('index.html', form=form)
+
+
+@app.route("/current_daily", methods=['GET', 'POST'])
+def current_daily():
+    no_hourly = {}
+    form = LocationForm()
+    if form.validate_on_submit():
+        location_value = form.location.data
+        latitude, longitude = get_coordinates_from_zip(location_value)
+        end_point = "predict_dailyML/current_weather"
+        response = helper_request_method(end_point, latitude, longitude)
+        if response.status_code == 200:
+            result = response.json()  # Use response.json() for JSON responses
+            return render_template('index.html', daily=result, form=form, result=no_hourly)  # Render a template with the result
+        else:
+            # Handle other status codes if needed
+            return render_template("error.html")
 
     return render_template('index.html', form=form)
 

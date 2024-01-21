@@ -78,15 +78,15 @@ async def predict_current(predictRequest: PredictionRequest):
     current_city_name = weather_data_result.get('city_name')
 
     return {
-        "Prediction": f"The current weather for {current_city_name} with precipitation prediction using the daily model",
-        "Current temp is": current_temp,
-        "Current temp min is": current_temp_min,
-        "Current temp max is": current_temp_max,
-        "current wind speed is": current_wind_speed,
-        "Current wind direction is": current_wind_direction,
-        "Current weather info is": current_weather_info,
-        "Current weather description is": current_weather_description,
-        "Current predicted precipitation is": formatted_current_precipitation_predict
+        "city": current_city_name,
+        "temp": current_temp,
+        "temp_min": current_temp_min,
+        "temp_max": current_temp_max,
+        "wind_speed": current_wind_speed,
+        "wind_direction": current_wind_direction,
+        "weather_info": current_weather_info,
+        "weather_description": current_weather_description,
+        "predicted_precipitation": formatted_current_precipitation_predict
         }
 
 
