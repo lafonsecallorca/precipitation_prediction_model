@@ -3244,15 +3244,16 @@ input, select, textarea {
 		}
 
 		.wrapper.style1 {
-			background-color: #7885AB;
+			background-color: #64808E;
+
 		}
 
 		.wrapper.style1-alt {
-			background-color: #667090;
+			background-color: #566e7a;
 		}
 
 		.wrapper.style2 {
-			background-color: #64808E;
+			background-color: #97BFB4;
 		}
 
 		.wrapper.style2-alt {
@@ -3378,7 +3379,7 @@ input, select, textarea {
 		display: -webkit-flex;
 		display: -ms-flex;
 		display: flex;
-		background-color: #5e42a6;
+		background-color: #64808E;;
 		cursor: default;
 		padding: 1.75em 2em;
 	}
