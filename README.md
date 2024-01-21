@@ -2,7 +2,7 @@
       AI Precipitation Prediction Project
 </h1>
 
-![PixelBrella Main](precipitation_prediction_model/precipitation_prediction_model-main/static/images/main.png)
+![PixelBrella Main](precipitation_prediction_model/precipitation_prediction_model-main/static/images/main_page.png)
 <h2>Overview</h2>
 <body>This repository contains code for an AI-powered precipitation prediction project. The project includes two main models, Hourly Model and Daily Model, designed to predict precipitation based on different datasets and methodologies.</body>
 
