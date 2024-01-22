@@ -40,7 +40,8 @@ def home():
     form = LocationForm()
     result = session.get('result', {})
     daily = session.get('daily', {})
-    return render_template("index.html", form=form, result=result, daily=daily)
+    trihourly = session.get('trihourly', {})
+    return render_template("index.html", form=form, result=result, daily=daily, trihourly=trihourly)
 
 
 @app.route("/current", methods=['GET', 'POST'])
@@ -74,6 +75,24 @@ def current_daily():
         if response.status_code == 200:
             daily = response.json()
             session['daily'] = daily  # Store 'daily' in session
+            return redirect(url_for('home'))  # Redirect to home to update the template
+        else:
+            return render_template("error.html")
+
+    return render_template('index.html', form=form)
+
+@app.route("/trihourly", methods=['GET', 'POST'])
+def trihourly():
+    form = LocationForm()
+    result = session.get('trihourly', {})
+    if form.validate_on_submit():
+        location_value = form.location.data
+        latitude, longitude = get_coordinates_from_zip(location_value)
+        end_point = "predict_hourlyML/fiveday/trihourly_forecast"
+        response = helper_request_method(end_point, latitude, longitude)
+        if response.status_code == 200:
+            trihourly = response.json()
+            session['trihourly'] = trihourly  # Store 'daily' in session
             return redirect(url_for('home'))  # Redirect to home to update the template
         else:
             return render_template("error.html")

@@ -82,7 +82,7 @@
 														   {% if result == {}: %}
 															  <span class="small grey">Forecast</span>
 														   {% else %}
-														   		<h6 class="small grey">{{ result.weather_info }}</h6>
+														   		<h6 class="small grey">{{ result.weather_details }}</h6>
 														   {% endif %}
 
 													   </div>
@@ -122,7 +122,7 @@
 																	{% if result == {}: %}
 																		<span> umbrella prediction </span>
 																	{% else %}
-																		{% if result.predicted_precipitation|float  > 0.03 and result.weather_info  != "Snow" %}
+																		{% if result.predicted_precipitation|float  > 0.02 and (result.weather_info  == "Rain" or result.weather_info  == "Clouds")   %}
 																			<span> Yes </span>
 																		{% else %}
 																			<span> No </span>
@@ -130,7 +130,15 @@
 															   		{% endif %}
 																</p>
 														   </div>
-
+															{% if result.weather_info == "Snow" %}
+																<img width="80" height="80" src="https://img.icons8.com/officel/80/snow.png" alt="snow"/>
+															{% elif result.weather_info  == "Rain" %}
+																<img width="80" height="80" src="https://img.icons8.com/officel/80/rain.png" alt="rain"/>
+															{% elif result.weather_info  == "Clouds" %}
+																<img width="80" height="80" src="https://img.icons8.com/officel/80/clouds.png" alt="clouds"/>
+														   {% else %}
+														   		<img width="96" height="96" src="https://img.icons8.com/external-kosonicon-solid-kosonicon/96/external-clear-sky-weather-kosonicon-solid-kosonicon.png" alt="external-clear-sky-weather-kosonicon-solid-kosonicon"/>
+														   {% endif %}
 
 													   </div>
 
@@ -150,142 +158,96 @@
 					<section id="two" class="wrapper style3 fade-up">
 						<div class="inner">
 							<h2>Tri-hourly Forecast</h2>
-							<p>Experience precision with our Hourly Tri-Hourly Five-Day Forecast—get detailed insights every three hours for the next five days, ensuring you're weather-ready with confidence.</p>
+							<p>Experience precision with our Tri-Hourly Five-Day Forecast—get detailed insights every three hours for the next five days, ensuring you're weather-ready with confidence.</p>
 							<div class="getLocation">
-									<form action="/action_page.php">
-									  <label for="location"></label><br>
-									  <input type="text" id="location" name="location" placeholder="Zip Code/City, State"><br><br>
-									  <ul class="actions">
-										<li><a href="#forecast" class="button">Submit</a></li>
-									  </ul>
-									</form>
+											<form method="POST" action="/trihourly">
+												{{ form.csrf_token }}
+												{{ form.location.label }} {{ form.location(size=20) }}
+												<input type="submit" value="Submit">
+											</form>
 							</div>
 							<div id="carouselExampleIndicators" class="carousel slide">
-							  <div class="carousel-indicators">
-								<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-								<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-								<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-							  </div>
-							  <div class="carousel-inner">
-								<div class="carousel-item active">
-									<section>
-										<div class="content">
-											<div class="inner">
-												<div class="container-fluid">
-													<div class="row justify-content-center">
-														<div class="col-12 col-md-4 col-sm-12 col-xs-12">
-															   <div class="card p-4">
+								<div class="carousel-indicators">
+									{% for index in range(trihourly['Prediction']|length) %}
+										<button type="button" data-bs-target="#trihourly-carousel" data-bs-slide-to="{{ index }}" {% if index == 0 %}class="active"{% endif %}></button>
+									{% endfor %}
+								</div>
 
-																   <div class="d-flex">
-																	   <h6 class="flex-grow-1">London</h6>
-																	   <h6>16:08</h6>
-																   </div>
+								<div class="carousel-inner">
+									{% for entry in trihourly['Prediction'] %}
+										<div class="carousel-item {% if loop.first %}active{% endif %}">
+											<section>
+												<div class="content">
+													<div class="inner">
+														<div class="container-fluid">
+															<div class="row justify-content-center">
+																<div class="col-12 col-md-4 col-sm-12 col-xs-12">
+																	<div class="card p-4">
+																		<div class="d-flex">
+																			<h6 class="flex-grow-1">{{ entry['city_name'] }}</h6>
+																		</div>
+																		<div class="d-flex flex-column temp mt-5 mb-3">
+																			<h1 class="mb-0 font-weight-bold" id="heading">{{ entry['Temp (F)']|int }}&deg; F</h1>
+																			<span class="small grey">{{ entry['weather_description'] }}</span>
+																		</div>
+																		<div class="d-flex">
+																			<div class="temp-details flex-grow-1">
+																				<p class="my-1">
+																					<i class="bi bi-wind"></i>
+																					<span>{{ entry['Wind Speed'] }} mph</span>
+																				</p>
+																				<p class="my-1">
+																					<i class="bi bi-compass"></i>
+																					<span>{{ entry['Wind Direction'] }}&deg;</span>
+																				</p>
+																				<p class="my-1">
+																					<i class="bi bi-moisture"></i>
+																					<span>{{ entry['Humidity'] }}%</span>
+																				</p>
+																				<p class="my-1">
+																					<i class="bi bi-umbrella"></i>
+																					{% if entry['Predicted_Precipitation']|float >= 0.01 and entry['weather_info'] == "Rain" %}
+																						<span>Yes</span>
+																					{% else %}
+																						<span>No</span>
+																					{% endif %}
+																				</p>
+																			</div>
+																			<div>
+																				{% if entry['weather_info']  == "Snow" %}
+																					<img width="80" height="80" src="https://img.icons8.com/officel/80/snow.png" alt="snow"/>
+																				{% elif entry['weather_info']  == "Rain" %}
+																					<img width="80" height="80" src="https://img.icons8.com/officel/80/rain.png" alt="rain"/>
+																				{% elif entry['weather_info']  == "Clouds" %}
+																					<img width="80" height="80" src="https://img.icons8.com/officel/80/clouds.png" alt="clouds"/>
+																				{% else %}
+																 					<img width="96" height="96" src="https://img.icons8.com/external-kosonicon-solid-kosonicon/96/external-clear-sky-weather-kosonicon-solid-kosonicon.png" alt="external-clear-sky-weather-kosonicon-solid-kosonicon"/>
+																				{% endif %}
+																			</div>
 
-																   <div class="d-flex flex-column temp mt-5 mb-3">
-																	   <h1 class="mb-0 font-weight-bold" id="heading"> 13&deg; C </h1>
-																	   <span class="small grey">Stormy</span>
-																   </div>
-
-																   <div class="d-flex">
-																	   <div class="temp-details flex-grow-1">
-																			<p class="my-1">
-																				<img src="https://i.imgur.com/B9kqOzp.png" height="17px" >
-
-																			   <span> 40 km/h  </span>
-																			</p>
-
-																			<p class="my-1">
-																			   <i class="fa fa-tint mr-2" aria-hidden="true"></i>
-																			   <span> 84% </span>
-																			</p>
-
-																			<p class="my-1">
-																				<img src="https://i.imgur.com/wGSJ8C5.png" height="17px" >
-																				<span> 0.2h </span>
-																			</p>
-																	   </div>
-
-																	   <div>
-																		   <img src="https://i.imgur.com/Qw7npIg.png" width="100px">
-																	   </div>
-
-
-																   </div>
-
-
+																		</div>
+																	</div>
 																</div>
+															</div>
 														</div>
 													</div>
-
-
 												</div>
+
+											</section>
 											</div>
-										</div>
-									</section>
+										  {% endfor %}
 								</div>
-								<div class="carousel-item">
-								  <section>
-									<div class="content">
-										<div class="inner">
-											<div class="container-fluid">
-												<div class="row justify-content-center">
-													<div class="col-12 col-md-4 col-sm-12 col-xs-12">
-														   <div class="card p-4">
-
-															   <div class="d-flex">
-																   <h6 class="flex-grow-1">London</h6>
-																   <h6>16:08</h6>
-															   </div>
-
-															   <div class="d-flex flex-column temp mt-5 mb-3">
-																   <h1 class="mb-0 font-weight-bold" id="heading"> 13&deg; C </h1>
-																   <span class="small grey">Stormy</span>
-															   </div>
-
-															   <div class="d-flex">
-																   <div class="temp-details flex-grow-1">
-																		<p class="my-1">
-																			<img src="https://i.imgur.com/B9kqOzp.png" height="17px" >
-
-																		   <span> 40 km/h  </span>
-																		</p>
-
-																		<p class="my-1">
-																		   <i class="fa fa-tint mr-2" aria-hidden="true"></i>
-																		   <span> 84% </span>
-																		</p>
-
-																		<p class="my-1">
-																			<img src="https://i.imgur.com/wGSJ8C5.png" height="17px" >
-																			<span> 0.2h </span>
-																		</p>
-																   </div>
-
-																   <div>
-																	   <img src="https://i.imgur.com/Qw7npIg.png" width="100px">
-																   </div>
-															   </div>
-															</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</section>
-								</div>
-								<div class="carousel-item">
-								  <img src="..." class="d-block w-100" alt="...">
-								</div>
-							  </div>
-							  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-								<span class="visually-hidden">Previous</span>
-							  </button>
-							  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-								<span class="carousel-control-next-icon" aria-hidden="true"></span>
-								<span class="visually-hidden">Next</span>
-							  </button>
+								<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+									<span class="visually-hidden">Previous</span>
+								</button>
+								<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+									<span class="carousel-control-next-icon" aria-hidden="true"></span>
+									<span class="visually-hidden">Next</span>
+								</button>
 							</div>
+
+
 						</div>
 					</section>
 
@@ -319,7 +281,7 @@
 														   {% if daily == {}: %}
 															  <span class="small grey">Forecast</span>
 														   {% else %}
-														   		<h6 class="small grey">{{ daily.weather_info }}</h6>
+														   		<h6 class="small grey">{{ daily.weather_description }}</h6>
 														   {% endif %}
 
 													   </div>
@@ -350,7 +312,7 @@
 																	{% if daily == {}: %}
 																		<span> umbrella prediction </span>
 																	{% else %}
-																		{% if daily.predicted_precipitation|float  > 0.03 and daily.weather_info  != "Snow" %}
+																		{% if daily.predicted_precipitation|float  > 0.01  %}
 																			<span> Yes </span>
 																		{% else %}
 																			<span> No </span>
@@ -358,7 +320,17 @@
 															   		{% endif %}
 																</p>
 														   </div>
-
+															 <div>
+																   {% if daily.weather_info == "Snow" %}
+																		<img width="80" height="80" src="https://img.icons8.com/officel/80/snow.png" alt="snow"/>
+																	{% elif daily.weather_info  == "Rain" %}
+																		<img width="80" height="80" src="https://img.icons8.com/officel/80/rain.png" alt="rain"/>
+																	{% elif daily.weather_info  == "Clouds" %}
+																		<img width="80" height="80" src="https://img.icons8.com/officel/80/clouds.png" alt="clouds"/>
+																 	{% else %}
+																 		<img width="96" height="96" src="https://img.icons8.com/external-kosonicon-solid-kosonicon/96/external-clear-sky-weather-kosonicon-solid-kosonicon.png" alt="external-clear-sky-weather-kosonicon-solid-kosonicon"/>
+																	{% endif %}
+															 </div>
 
 													   </div>
 
@@ -372,6 +344,13 @@
 								</section>
 								<section>
 									<ul class="contact">
+										<div class="getLocation">
+											<form method="POST" action="/current_daily">
+												{{ form.csrf_token }}
+												{{ form.location.label }} {{ form.location(size=20) }}
+												<input type="submit" value="Submit">
+											</form>
+										</div>
 									</ul>
 								</section>
 							</div>
@@ -385,7 +364,7 @@
 			<footer id="footer" class="wrapper style1-alt">
 				<div class="inner">
 					<ul class="menu">
-						<li>&copy; Untitled. All rights reserved.</li>
+						<li>&copy; Untitled. All rights reserved.</li><li><a  href="https://icons8.com/icon/3ychdlhyd0By/clouds">Clouds</a> icon by <a href="https://icons8.com">Icons8</a></li>
 					</ul>
 				</div>
 			</footer>
