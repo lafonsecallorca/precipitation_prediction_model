@@ -31,15 +31,15 @@ The first dataset we found was from the National Center for Environmental Inform
 
 <a href="https://www.ncdc.noaa.gov/cdo-web/search">This is the link to the daily dataset.</a>
 
-![PixelBrella Main](precipitation_prediction_model/precipitation_prediction_model-main/static/images/prediction_hourlyModel.png)
-![PixelBrella Main](precipitation_prediction_model/precipitation_prediction_model-main/static/images/trihourly.png)
+![PixelBrella Daily](precipitation_prediction_model/precipitation_prediction_model-main/static/images/prediction_hourlyModel.png)
+![PixelBrella Trihourly](precipitation_prediction_model/precipitation_prediction_model-main/static/images/trihourly.png)
 
 <h3>Hourly Model</h3>
 For the hourly mode, we used a data set that is from Iowa State University. This dataset offered data every hour and we collected data from the past 10 years​. This dataset allowed us to select more weather data to make our model more robust.
 
 <a href="https://mesonet.agron.iastate.edu/request/download.phtml">This is the link for the hourly dataset. </a>
 
-![PixelBrella Main](precipitation_prediction_model/precipitation_prediction_model-main/static/images/dailyModel.png)
+![PixelBrella DailyModel](precipitation_prediction_model/precipitation_prediction_model-main/static/images/dailyModel.png)
 
 <h2>Preprocessing</h2>
 <h3>Daily Model</h3>
