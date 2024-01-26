@@ -15,6 +15,7 @@ from daily_model import DailyModel
 from hourly_model import HourlyModel
 from weatherapi_class import WeatherData
 import logging
+import os
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -38,10 +39,10 @@ async def predict_current(predictRequest: PredictionRequest):
         knn_predict = weather_model.predict(knn_model, X_test_scaled)
 
         # predict precipitation with weather api
-        api_key = "7243506b0b349484d43cf58e1d064bac"
+        api_key = os.environ.get("API_KEY")
         lat = predictRequest.latitude
         lon = predictRequest.longitude
-        dew_api_key = 'b8Eudmqk3mta455AVxTMVYrrtEbbvsh7'
+        dew_api_key = os.environ.get("DEW_API_KEY")
 
         weather_instance = WeatherData(api_key, dew_api_key, lat, lon)
 
@@ -101,10 +102,10 @@ async def predict_current(predictRequest: PredictionRequest):
         rf_predict = weather_model.predict(rf_model, X_test_scaled)
 
         # predict precipitation with weather api
-        api_key = "7243506b0b349484d43cf58e1d064bac"
+        api_key = os.environ.get("API_KEY")
         lat = predictRequest.latitude
         lon = predictRequest.longitude
-        dew_api_key = 'b8Eudmqk3mta455AVxTMVYrrtEbbvsh7'
+        dew_api_key = os.environ.get("DEW_API_KEY")
 
         weather_instance = WeatherData(api_key, dew_api_key, lat, lon)
 
@@ -176,10 +177,10 @@ async def predict_fiveday_trihourly(predictRequest: PredictionRequest):
     rf_predict = weather_model.predict(rf_model, X_test_scaled)
 
     # predict precipitation with weather api
-    api_key = "7243506b0b349484d43cf58e1d064bac"
+    api_key = os.environ.get("API_KEY")
     lat = predictRequest.latitude
     lon = predictRequest.longitude
-    dew_api_key = 'b8Eudmqk3mta455AVxTMVYrrtEbbvsh7'
+    dew_api_key = os.environ.get("DEW_API_KEY")
 
     weather_instance = WeatherData(api_key, dew_api_key, lat, lon)
 

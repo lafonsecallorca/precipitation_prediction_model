@@ -5,6 +5,7 @@ from flask_wtf import FlaskForm
 from wtforms import Form, StringField, validators
 from wtforms.validators import DataRequired
 import secrets
+import os
 
 app = Flask(__name__)
 # Generate a secret key
@@ -16,7 +17,7 @@ MODEL_API_URL = "http://127.0.0.1:8000/"
 
 # Function to get latitude and longitude from ZIP code using Google Maps API
 def get_coordinates_from_zip(zip_code):
-    api_key = 'AIzaSyCHy3jGmG7yN0EECyKhTtfSRLgXqHZ894M'
+    api_key = os.environ.get("GEO_API_KEY")
     geolocator = GoogleV3(api_key=api_key)
     location = geolocator.geocode(zip_code)
     if location:
